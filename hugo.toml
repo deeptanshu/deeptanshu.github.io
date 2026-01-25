@@ -1,0 +1,21 @@
+baseURL = "https://deeptanshu.github.io/"
+languageCode = "en-us"
+title = "Deeptanshu Jha"
+theme = "PaperMod"
+enableRobotsTXT = true
+
+[params]
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowCodeCopyButtons = true
+
+[menu]
+  [[menu.main]]
+    name = "Essays"
+    url = "/essays/"
+    weight = 10
+
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 20
