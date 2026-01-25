@@ -1,8 +1,15 @@
-# Build Your Own Glean: A Production RAG System
+---
+title: "Build Your Own Glean: A Production RAG System"
+date: 2026-01-25T13:45:00-08:00
+draft: false
+category: "AI Systems"
+excerpt: "Demos are easy. Production is hard. If you want internal knowledge search that actually works, you're not 'adding RAG'—you're building a pipeline where the LLM is the easiest part."
+---
 
-I've spent three years building AI tools at fintech companies and on side projects. The biggest lesson: demos are easy, production is hard. If you want to build internal knowledge search that actually works, you're not "adding RAG to an LLM." You're building a data pipeline where the LLM is the easiest part.
 
-This guide covers what actually matters. Not the basics you can find in any tutorial, but the parts that break in production: PDF parsing, hybrid search, permission enforcement, ranking pipelines, and evaluation frameworks that aren't based on vibes.
+I've spent three years building AI tools at companies and on my own side projects. The biggest lesson: demos are easy, production is hard.
+
+This guide covers what actually matters, the parts that break in production: PDF parsing, hybrid search, permission enforcement, ranking pipelines, and evaluation frameworks that aren't based on vibes.
 
 ## Why RAG Exists (the actual reasons)
 

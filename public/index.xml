@@ -6,8 +6,18 @@
     <description>Recent content in Home on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 24 Jan 2026 22:10:00 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 25 Jan 2026 13:45:00 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Build Your Own Glean: A Production RAG System</title>
+      <link>http://localhost:1313/essays/real-world-rag-partone/</link>
+      <pubDate>Sun, 25 Jan 2026 13:45:00 -0800</pubDate>
+      <guid>http://localhost:1313/essays/real-world-rag-partone/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;ve spent three years building AI tools at companies and on my own side projects. The biggest lesson: demos are easy, production is hard.&lt;/p&gt;
+&lt;p&gt;This guide covers what actually matters, the parts that break in production: PDF parsing, hybrid search, permission enforcement, ranking pipelines, and evaluation frameworks that aren&amp;rsquo;t based on vibes.&lt;/p&gt;
+&lt;h2 id=&#34;why-rag-exists-the-actual-reasons&#34;&gt;Why RAG Exists (the actual reasons)&lt;/h2&gt;
+&lt;p&gt;Base models don&amp;rsquo;t know your internal docs. You can&amp;rsquo;t retrain GPT-4 every time someone updates a wiki page. RAG gives you three things base models don&amp;rsquo;t:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Rebuilding (resuscitating) this site</title>
       <link>http://localhost:1313/essays/resuscitating-this-site/</link>

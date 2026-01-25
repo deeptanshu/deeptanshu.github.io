@@ -18,5 +18,14 @@
 &lt;h2 id=&#34;make-the-smallest-atomic-desire-true&#34;&gt;Make the smallest atomic desire true&lt;/h2&gt;
 &lt;p&gt;I wanted two things:&lt;/p&gt;</description>
     </item>
+    <item>
+      <title></title>
+      <link>http://localhost:1313/essays/real-world-rag-partone/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/essays/real-world-rag-partone/</guid>
+      <description>&lt;h1 id=&#34;build-your-own-glean-a-production-rag-system&#34;&gt;Build Your Own Glean: A Production RAG System&lt;/h1&gt;
+&lt;p&gt;I&amp;rsquo;ve spent three years building AI tools at fintech companies and on side projects. The biggest lesson: demos are easy, production is hard. If you want to build internal knowledge search that actually works, you&amp;rsquo;re not &amp;ldquo;adding RAG to an LLM.&amp;rdquo; You&amp;rsquo;re building a data pipeline where the LLM is the easiest part.&lt;/p&gt;
+&lt;p&gt;This guide covers what actually matters. Not the basics you can find in any tutorial, but the parts that break in production: PDF parsing, hybrid search, permission enforcement, ranking pipelines, and evaluation frameworks that aren&amp;rsquo;t based on vibes.&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>
