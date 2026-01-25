@@ -1,48 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
-	<meta name="generator" content="Hugo 0.154.5"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Deeptanshu Jha · Product Builder</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="/css/site.css">
-</head>
-<body>
-  
-  <nav>
-    <div class="nav-container">
-      <a href="/" class="nav-logo">Deeptanshu Jha</a>
-      <div class="nav-links">
-        <a href="/#essays" class="nav-link">Essays</a>
-        <a href="/#projects" class="nav-link">Projects</a>
-        <a href="/essays/" class="nav-link">All posts</a>
-
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="1" x2="12" y2="3"/>
-            <line x1="12" y1="21" x2="12" y2="23"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-            <line x1="1" y1="12" x2="3" y2="12"/>
-            <line x1="21" y1="12" x2="23" y2="12"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg id="moonIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  
+{{ define "main" }}
 <div class="hero">
   <div class="container">
     <div class="hero-content">
@@ -97,7 +53,7 @@
   <div class="hero-accent"></div>
 </div>
 
-
+<!-- Essays Section -->
 <section id="essays">
   <div class="container">
     <div class="section-header">
@@ -107,31 +63,28 @@
     </div>
 
     <div class="essays-grid">
-      
-      
+      {{ $essays := where .Site.RegularPages "Section" "essays" }}
+      {{ range first 9 ($essays.ByDate.Reverse) }}
         <article class="essay-card">
           <div class="essay-meta">
-            Jan 2026
+            {{ with .Params.category }}{{ . }} · {{ end }}{{ .Date.Format "Jan 2006" }}
           </div>
-          <h3 class="essay-title">Rebuilding (resuscitating) this site</h3>
+          <h3 class="essay-title">{{ .Title }}</h3>
           <p class="essay-excerpt">
-            <p>I logged into GitHub after 14 years and found this site sitting there like an abandoned project. Another GitHub account exists somewhere, tied to an email I&rsquo;ll never check again (github.com/lekhakpadmanabh). So I picked this one, shipped something simple, and got it live.</p>
-<p>What started as &ldquo;just website setup&rdquo; turned into a surprisingly good session with ChatGPT and Claude Code. Same product instincts, different canvas.</p>
-<h2 id="make-the-smallest-atomic-desire-true">Make the smallest atomic desire true</h2>
-<p>I wanted two things:</p>
+            {{ if .Params.excerpt }}{{ .Params.excerpt }}{{ else }}{{ .Summary }}{{ end }}
           </p>
-          <a href="/essays/resuscitating-this-site/" class="essay-link">Read</a>
+          <a href="{{ .RelPermalink }}" class="essay-link">Read</a>
         </article>
-      
+      {{ end }}
     </div>
 
     <div style="margin-top: 1.2rem;">
-      <a class="essay-link" href="/essays/">View all essays</a>
+      <a class="essay-link" href="{{ "/essays/" | relURL }}">View all essays</a>
     </div>
   </div>
 </section>
 
-
+<!-- Projects Section -->
 <section id="projects">
   <div class="container">
     <div class="section-header">
@@ -141,10 +94,30 @@
     </div>
 
     <div class="projects-list">
-      
-      
+      {{ $projects := where .Site.RegularPages "Section" "projects" }}
+      {{ range first 8 ($projects.ByDate.Reverse) }}
+        <div class="project">
+          <div class="project-label">
+            {{ with .Params.label }}{{ . }}{{ else }}Project{{ end }}
+          </div>
+          <div class="project-content">
+            <h3>{{ .Title }}</h3>
+            <p class="project-description">
+              {{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}
+            </p>
+            <div class="project-tags">
+              {{ range (.Params.tags | default (slice)) }}
+                <span class="tag">{{ . }}</span>
+              {{ end }}
+            </div>
+            <div style="margin-top: 0.9rem;">
+              <a class="essay-link" href="{{ .RelPermalink }}">Open</a>
+            </div>
+          </div>
+        </div>
+      {{ end }}
 
-      
+      {{ if eq (len $projects) 0 }}
         <div class="project visible" style="border-bottom:none;">
           <div class="project-label">Next</div>
           <div class="project-content">
@@ -154,22 +127,12 @@
             </p>
           </div>
         </div>
-      
+      {{ end }}
     </div>
 
     <div style="margin-top: 1.2rem;">
-      <a class="essay-link" href="/projects/">View all projects</a>
+      <a class="essay-link" href="{{ "/projects/" | relURL }}">View all projects</a>
     </div>
   </div>
 </section>
-
-
-  <footer>
-    <div class="container">
-      <p class="footer-text">© 2026 Deeptanshu Jha.</p>
-    </div>
-  </footer>
-
-  <script src="/js/site.js"></script>
-</body>
-</html>
+{{ end }}

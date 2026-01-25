@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Categories · Deeptanshu Jha</title>
+  <title>{{ if .IsHome }}Deeptanshu Jha · Product Builder{{ else }}{{ .Title }} · Deeptanshu Jha{{ end }}</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/css/site.css">
+  <link rel="stylesheet" href="{{ "/css/site.css" | relURL }}">
 </head>
 <body>
-  
+  <!-- Navigation -->
   <nav>
     <div class="nav-container">
-      <a href="/" class="nav-logo">Deeptanshu Jha</a>
+      <a href="{{ "/" | relURL }}" class="nav-logo">Deeptanshu Jha</a>
       <div class="nav-links">
-        <a href="/#essays" class="nav-link">Essays</a>
-        <a href="/#projects" class="nav-link">Projects</a>
-        <a href="/essays/" class="nav-link">All posts</a>
+        <a href="{{ "/" | relURL }}#essays" class="nav-link">Essays</a>
+        <a href="{{ "/" | relURL }}#projects" class="nav-link">Projects</a>
+        <a href="{{ "/essays/" | relURL }}" class="nav-link">All posts</a>
 
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
           <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
@@ -41,20 +41,14 @@
     </div>
   </nav>
 
-  
-<header class="page-header">
-    <h1>Categories</h1>
-</header>
-
-<ul class="terms-tags">
-</ul>
+  {{ block "main" . }}{{ end }}
 
   <footer>
     <div class="container">
-      <p class="footer-text">© 2026 Deeptanshu Jha.</p>
+      <p class="footer-text">© {{ now.Format "2006" }} Deeptanshu Jha.</p>
     </div>
   </footer>
 
-  <script src="/js/site.js"></script>
+  <script src="{{ "/js/site.js" | relURL }}"></script>
 </body>
 </html>

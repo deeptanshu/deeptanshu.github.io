@@ -1,0 +1,35 @@
+{{ define "main" }}
+<section style="padding-top: 6rem;">
+  <div class="container">
+    <div class="section-header visible">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="projects-list">
+      {{ range .Pages.ByDate.Reverse }}
+        <div class="project visible">
+          <div class="project-label">
+            {{ with .Params.label }}{{ . }}{{ else }}Project{{ end }}
+          </div>
+          <div class="project-content">
+            <h3>{{ .Title }}</h3>
+            <p class="project-description">
+              {{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}
+            </p>
+            <div class="project-tags">
+              {{ range (.Params.tags | default (slice)) }}
+                <span class="tag">{{ . }}</span>
+              {{ end }}
+            </div>
+            <div style="margin-top: 0.9rem;">
+              <a class="essay-link" href="{{ .RelPermalink }}">Open</a>
+            </div>
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

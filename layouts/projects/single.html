@@ -1,0 +1,28 @@
+{{ define "main" }}
+<section style="padding-top: 6rem;">
+  <div class="container" style="max-width: 900px;">
+    <div class="essay-meta" style="margin-bottom: 0.8rem;">
+      {{ with .Params.label }}{{ . }} · {{ end }}{{ .Date.Format "Jan 2, 2006" }}
+    </div>
+    <h1 class="section-title" style="margin-bottom: 1rem;">{{ .Title }}</h1>
+
+    <div class="essay-card visible" style="padding: 2rem;">
+      <div class="prose">
+        {{ .Content }}
+      </div>
+
+      {{ with .Params.tags }}
+        <div class="project-tags" style="margin-top: 1.5rem;">
+          {{ range . }}
+            <span class="tag">{{ . }}</span>
+          {{ end }}
+        </div>
+      {{ end }}
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <a class="essay-link" href="{{ "/projects/" | relURL }}">Back to projects</a>
+    </div>
+  </div>
+</section>
+{{ end }}

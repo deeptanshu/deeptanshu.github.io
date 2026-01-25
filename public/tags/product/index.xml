@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Essays on Deeptanshu Jha</title>
-    <link>http://localhost:1313/essays/</link>
-    <description>Recent content in Essays on Deeptanshu Jha</description>
+    <title>Product on Deeptanshu Jha</title>
+    <link>http://localhost:1313/tags/product/</link>
+    <description>Recent content in Product on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 24 Jan 2026 22:10:00 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/essays/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/product/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rebuilding (resuscitating) this site</title>
       <link>http://localhost:1313/essays/resuscitating-this-site/</link>
