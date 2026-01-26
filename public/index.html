@@ -12,7 +12,7 @@
 
   <link rel="stylesheet" href="/css/site.css">
 </head>
-<body>
+<body class="home">
   
   <nav>
     <div class="nav-container">
@@ -42,6 +42,7 @@
     </div>
   </nav>
 
+<main class="main">
   
 <div class="hero">
   <div class="container">
@@ -54,17 +55,10 @@
           Focused on building intelligent systems that scale responsibly and safely.
         </p>
 
-        <div class="expertise-tags">
-          <span class="expertise-tag">AI Product Management</span>
-          <span class="expertise-tag">Fintech Infrastructure</span>
-          <span class="expertise-tag">Billing Systems</span>
-          <span class="expertise-tag">LLM Applications</span>
-          <span class="expertise-tag">Developer Tools</span>
-          <span class="expertise-tag">Growth Strategy</span>
-        </div>
+
 
         <div class="socials">
-          <a href="https://linkedin.com/in/deeptanshujha" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/deeptanshu-jha/" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
           <a href="https://github.com/deeptanshu" class="social-link" target="_blank" rel="noopener">GitHub</a>
           <a href="https://arxiv.org/" class="social-link" target="_blank" rel="noopener">arXiv</a>
         </div>
@@ -75,7 +69,7 @@
           <h3>Quick Facts</h3>
           <div class="fact-item">
             <span class="fact-label">Current Role</span>
-            <span class="fact-value">Staff PM, QuickBooks</span>
+            <span class="fact-value">Product Manager, Intuit QuickBooks</span>
           </div>
           <div class="fact-item">
             <span class="fact-label">Location</span>
@@ -83,12 +77,9 @@
           </div>
           <div class="fact-item">
             <span class="fact-label">Focus</span>
-            <span class="fact-value">AI + Billing + Dev Tools</span>
+            <span class="fact-value">AI + Billing + Growth</span>
           </div>
-          <div class="fact-item">
-            <span class="fact-label">Writing</span>
-            <span class="fact-value">Essays, notes, learnings</span>
-          </div>
+
         </div>
       </div>
 
@@ -114,10 +105,23 @@
             AI Systems · Jan 2026
           </div>
           <h3 class="essay-title">Build Your Own Glean: A Production RAG System</h3>
-          <p class="essay-excerpt">
-            Demos are easy. Production is hard. If you want internal knowledge search that actually works, you&#39;re not &#39;adding RAG&#39;—you&#39;re building a pipeline where the LLM is the easiest part.
-          </p>
+          
+  <p class="essay-excerpt">Demos are easy. Production is hard. If you want internal knowledge search that actually works, you&#39;re not &#39;adding RAG&#39;—you&#39;re building a pipeline where the LLM is the easiest part.</p>
+
+
           <a href="/essays/real-world-rag-partone/" class="essay-link">Read</a>
+        </article>
+      
+        <article class="essay-card">
+          <div class="essay-meta">
+            AI Evals · Jan 2026
+          </div>
+          <h3 class="essay-title">AI Evals: What I learned shipping production grade billing systems</h3>
+          
+  <p class="essay-excerpt">From Evals 101 to Production Grade systems.</p>
+
+
+          <a href="/essays/realwordevals/" class="essay-link">Read</a>
         </article>
       
         <article class="essay-card">
@@ -125,12 +129,8 @@
             Jan 2026
           </div>
           <h3 class="essay-title">Rebuilding (resuscitating) this site</h3>
-          <p class="essay-excerpt">
-            <p>I logged into GitHub after 14 years and found this site sitting there like an abandoned project. Another GitHub account exists somewhere, tied to an email I&rsquo;ll never check again (github.com/lekhakpadmanabh). So I picked this one, shipped something simple, and got it live.</p>
-<p>What started as &ldquo;just website setup&rdquo; turned into a surprisingly good session with ChatGPT and Claude Code. Same product instincts, different canvas.</p>
-<h2 id="make-the-smallest-atomic-desire-true">Make the smallest atomic desire true</h2>
-<p>I wanted two things:</p>
-          </p>
+          
+
           <a href="/essays/resuscitating-this-site/" class="essay-link">Read</a>
         </article>
       
@@ -154,17 +154,36 @@
     <div class="projects-list">
       
       
-
-      
-        <div class="project visible" style="border-bottom:none;">
-          <div class="project-label">Next</div>
+        <div class="project">
+          <div class="project-label">
+            Text Summarization
+          </div>
           <div class="project-content">
-            <h3>Add your first project</h3>
+
+<h3>
+  
+    <a href="https://github.com/lekhakpadmanabh/Summarizer/" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">
+      Summarizer (2014)
+    </a>
+  
+</h3>
             <p class="project-description">
-              Create a page under <code>content/projects/</code> and it will show up here automatically.
+              <p>Extractive text summarization in Python using classic NLP + graph ranking. It ended up powering multiple Reddit bots. Source <a href="https://github.com/lekhakpadmanabh/Summarizer/">here</a></p>
             </p>
+            <div class="project-tags">
+              
+                <span class="tag">NLP</span>
+              
+                <span class="tag">Text Summarization</span>
+              
+                <span class="tag">PageRank</span>
+              
+            </div>
+
           </div>
         </div>
+      
+
       
     </div>
 
@@ -174,6 +193,7 @@
   </div>
 </section>
 
+</main>
 
   <footer>
     <div class="container">

@@ -9,6 +9,23 @@
     <lastBuildDate>Sun, 25 Jan 2026 13:45:00 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>AI Evals: What I learned shipping production grade billing systems</title>
+      <link>http://localhost:1313/essays/realwordevals/</link>
+      <pubDate>Sun, 25 Jan 2026 13:45:00 -0800</pubDate>
+      <guid>http://localhost:1313/essays/realwordevals/</guid>
+      <description>&lt;h2 id=&#34;part-1-evals-101---what-are-evaluations&#34;&gt;Part 1: Evals 101 - What Are Evaluations?&lt;/h2&gt;
+&lt;h3 id=&#34;the-core-concept&#34;&gt;The Core Concept&lt;/h3&gt;
+&lt;p&gt;When you build an AI system that answers questions using documents (a RAG system), you need to know: &lt;strong&gt;does it work?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;An evaluation is a systematic way to measure your system&amp;rsquo;s performance using metrics. Instead of manually checking a few examples and saying &amp;ldquo;looks good,&amp;rdquo; you:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a test dataset of questions with known correct answers&lt;/li&gt;
+&lt;li&gt;Run your system on those questions&lt;/li&gt;
+&lt;li&gt;Measure how often it gets the right answer&lt;/li&gt;
+&lt;li&gt;Track this score over time&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Example:&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Build Your Own Glean: A Production RAG System</title>
       <link>http://localhost:1313/essays/real-world-rag-partone/</link>
       <pubDate>Sun, 25 Jan 2026 13:45:00 -0800</pubDate>
@@ -17,6 +34,13 @@
 &lt;p&gt;This guide covers what actually matters, the parts that break in production: PDF parsing, hybrid search, permission enforcement, ranking pipelines, and evaluation frameworks that aren&amp;rsquo;t based on vibes.&lt;/p&gt;
 &lt;h2 id=&#34;why-rag-exists-the-actual-reasons&#34;&gt;Why RAG Exists (the actual reasons)&lt;/h2&gt;
 &lt;p&gt;Base models don&amp;rsquo;t know your internal docs. You can&amp;rsquo;t retrain GPT-4 every time someone updates a wiki page. RAG gives you three things base models don&amp;rsquo;t:&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Summarizer (2014)</title>
+      <link>http://localhost:1313/projects/summarizer/</link>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>http://localhost:1313/projects/summarizer/</guid>
+      <description>&lt;p&gt;Extractive text summarization in Python using classic NLP + graph ranking. It ended up powering multiple Reddit bots. Source &lt;a href=&#34;https://github.com/lekhakpadmanabh/Summarizer/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Rebuilding (resuscitating) this site</title>

@@ -2,13 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/tags/building/</loc>
-    <lastmod>2026-01-24T22:10:00-08:00</lastmod>
+    <loc>http://localhost:1313/essays/realwordevals/</loc>
+    <lastmod>2026-01-25T13:45:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/essays/real-world-rag-partone/</loc>
+    <lastmod>2026-01-25T13:45:00-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/essays/</loc>
-    <lastmod>2026-01-24T22:10:00-08:00</lastmod>
+    <lastmod>2026-01-25T13:45:00-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
+    <lastmod>2026-01-25T13:45:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/nlp/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/pagerank/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/projects/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/projects/summarizer/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/text-summarization/</loc>
+    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/building/</loc>
     <lastmod>2026-01-24T22:10:00-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/product/</loc>
@@ -17,13 +41,6 @@
     <loc>http://localhost:1313/essays/resuscitating-this-site/</loc>
     <lastmod>2026-01-24T22:10:00-08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-01-24T22:10:00-08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/essays/real-world-rag-partone/</loc>
-  </url><url>
     <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/projects/</loc>
   </url>
 </urlset>

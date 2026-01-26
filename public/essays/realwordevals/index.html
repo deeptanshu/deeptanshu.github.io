@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Evals: What I learned shipping production grade billing systems · Deeptanshu Jha</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body class="page">
+  
+  <nav>
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Deeptanshu Jha</a>
+      <div class="nav-links">
+        <a href="/#essays" class="nav-link">Essays</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="/essays/" class="nav-link">All posts</a>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="moonIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+<main class="main">
+  
+<section style="padding-top: 6rem;">
+  <div class="container" style="max-width: 850px;">
+    <div class="essay-meta" style="margin-bottom: 0.8rem;">
+      AI Evals · Jan 25, 2026
+    </div>
+    <h1 class="section-title" style="margin-bottom: 1rem;">AI Evals: What I learned shipping production grade billing systems</h1>
+
+    <div class="essay-card visible" style="padding: 2rem;">
+      <div class="prose">
+        <h2 id="part-1-evals-101---what-are-evaluations">Part 1: Evals 101 - What Are Evaluations?</h2>
+<h3 id="the-core-concept">The Core Concept</h3>
+<p>When you build an AI system that answers questions using documents (a RAG system), you need to know: <strong>does it work?</strong></p>
+<p>An evaluation is a systematic way to measure your system&rsquo;s performance using metrics. Instead of manually checking a few examples and saying &ldquo;looks good,&rdquo; you:</p>
+<ol>
+<li>Create a test dataset of questions with known correct answers</li>
+<li>Run your system on those questions</li>
+<li>Measure how often it gets the right answer</li>
+<li>Track this score over time</li>
+</ol>
+<p><strong>Example:</strong></p>
+<p>You build a system to answer questions about your company&rsquo;s HR policies.</p>
+<p>Manual testing: &ldquo;Hey, let me try 3 questions. Seems fine!&rdquo;</p>
+<p>Evaluation-based testing:</p>
+<ul>
+<li>Test dataset: 100 HR policy questions</li>
+<li>Your system: 73 correct, 27 incorrect</li>
+<li>Accuracy score: 73%</li>
+<li>After you improve chunking: 84 correct</li>
+<li>New accuracy: 84%</li>
+<li>Confidence: The change worked</li>
+</ul>
+<h3 id="why-this-matters">Why This Matters</h3>
+<p><strong>Before you have evals:</strong></p>
+<ul>
+<li>You don&rsquo;t know if changes make things better or worse</li>
+<li>You can&rsquo;t catch regressions (new code breaking old functionality)</li>
+<li>You can&rsquo;t compare different approaches objectively</li>
+</ul>
+<p><strong>After you have evals:</strong></p>
+<ul>
+<li>Every code change has a score</li>
+<li>You know exactly what improved and what got worse</li>
+<li>You can make data-driven decisions</li>
+</ul>
+<h3 id="the-two-part-system">The Two-Part System</h3>
+<p>Every RAG system has two components to evaluate:</p>
+<p><strong>1. Retrieval: Did you find the right documents?</strong></p>
+<ul>
+<li>Input: User question</li>
+<li>Output: List of relevant documents</li>
+<li>Metric: Did the most relevant document appear in your top results?</li>
+</ul>
+<p><strong>2. Generation: Did you create the right answer?</strong></p>
+<ul>
+<li>Input: Question + Retrieved documents</li>
+<li>Output: Generated answer</li>
+<li>Metric: Is the answer correct and supported by the documents?</li>
+</ul>
+<p>If retrieval fails, generation can&rsquo;t succeed. If you retrieve the wrong documents, even the best language model can&rsquo;t give the right answer.</p>
+<hr>
+<h2 id="part-2-basic-evaluation-metrics">Part 2: Basic Evaluation Metrics</h2>
+<h3 id="retrieval-metrics">Retrieval Metrics</h3>
+<p>These measure how well your system finds relevant documents.</p>
+<h4 id="mean-reciprocal-rank-mrr">Mean Reciprocal Rank (MRR)</h4>
+<p><strong>What it measures:</strong> How quickly users find what they need.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>For each question, find the rank (position) of the first relevant document</li>
+<li>Calculate reciprocal rank = 1 / rank</li>
+<li>Average across all questions</li>
+</ol>
+<p><strong>Example:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Question</th>
+          <th>Relevant Doc Position</th>
+          <th>Reciprocal Rank</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Q1</td>
+          <td>1st result</td>
+          <td>1/1 = 1.0</td>
+      </tr>
+      <tr>
+          <td>Q2</td>
+          <td>3rd result</td>
+          <td>1/3 = 0.33</td>
+      </tr>
+      <tr>
+          <td>Q3</td>
+          <td>Not in top 10</td>
+          <td>0</td>
+      </tr>
+  </tbody>
+</table>
+<p>MRR = (1.0 + 0.33 + 0) / 3 = <strong>0.44</strong></p>
+<p><strong>What this means:</strong> On average, the first relevant result appears around position 2-3.</p>
+<p><strong>Good score:</strong> MRR &gt; 0.7 means most relevant documents appear in top 2</p>
+<h4 id="recallk">Recall@k</h4>
+<p><strong>What it measures:</strong> What percentage of relevant documents appear in your top k results?</p>
+<p><strong>Example:</strong></p>
+<p>Question: &ldquo;What is our parental leave policy?&rdquo;
+Relevant documents in entire database: 3 documents
+Your system returns top 10 results: 2 of those 3 relevant docs are in the top 10</p>
+<p>Recall@10 = 2/3 = <strong>0.67</strong> (you found 67% of relevant documents)</p>
+<p><strong>Good score:</strong> Recall@10 &gt; 0.8 means you&rsquo;re finding most relevant information</p>
+<h4 id="precisionk">Precision@k</h4>
+<p><strong>What it measures:</strong> What percentage of your top k results are actually relevant?</p>
+<p><strong>Example:</strong></p>
+<p>Your system returns top 10 results
+6 of those 10 are actually relevant to the question</p>
+<p>Precision@10 = 6/10 = <strong>0.6</strong> (60% of what you returned was useful)</p>
+<p><strong>Good score:</strong> Precision@5 &gt; 0.7 means most of what you return is relevant</p>
+<h3 id="generation-metrics">Generation Metrics</h3>
+<p>These measure the quality of the generated answer.</p>
+<h4 id="correctness">Correctness</h4>
+<p><strong>What it measures:</strong> Did the answer solve the user&rsquo;s question?</p>
+<p><strong>How to measure:</strong></p>
+<p>Option 1 - Manual: Human reads the answer and marks it correct/incorrect</p>
+<p>Option 2 - LLM-as-judge: Use another AI model to grade the answer</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">evaluate_answer</span>(question, generated_answer, expected_answer):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Compare generated answer to expected answer
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Returns: CORRECT, PARTIALLY_CORRECT, or INCORRECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Use an LLM to judge</span>
+</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Question: </span><span style="color:#e6db74">{</span>question<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Expected Answer: </span><span style="color:#e6db74">{</span>expected_answer<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Generated Answer: </span><span style="color:#e6db74">{</span>generated_answer<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Is the generated answer correct?
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Reply with: CORRECT, PARTIALLY_CORRECT, or INCORRECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> llm_judge(prompt)
+</span></span></code></pre></div><h4 id="faithfulness-groundedness">Faithfulness (Groundedness)</h4>
+<p><strong>What it measures:</strong> Is every claim in the answer supported by the retrieved documents?</p>
+<p>This catches hallucinations - when the model makes up information not in the source documents.</p>
+<p><strong>Example:</strong></p>
+<p>Retrieved document: &ldquo;Our company offers 12 weeks of parental leave.&rdquo;</p>
+<p>Generated answer: &ldquo;The company offers 12 weeks of parental leave, which can be extended to 16 weeks with manager approval.&rdquo;</p>
+<p>Faithfulness check: ❌ FAILED</p>
+<ul>
+<li>&ldquo;12 weeks&rdquo; ✓ supported by document</li>
+<li>&ldquo;extended to 16 weeks with manager approval&rdquo; ✗ NOT in document (hallucination)</li>
+</ul>
+<h4 id="answer-completeness">Answer Completeness</h4>
+<p><strong>What it measures:</strong> Did the answer include all important information?</p>
+<p><strong>Example:</strong></p>
+<p>Expected answer should contain: [12 weeks leave, applies to all employees, must be taken within first year]</p>
+<p>Generated answer mentions: [12 weeks leave, applies to all employees]</p>
+<p>Completeness = 2/3 = <strong>0.67</strong> (missing one key fact)</p>
+<hr>
+<h2 id="part-3-building-your-first-evaluation">Part 3: Building Your First Evaluation</h2>
+<h3 id="step-1-create-a-test-dataset">Step 1: Create a Test Dataset</h3>
+<p>Start with 20-30 real questions that users have asked (or will ask).</p>
+<p><strong>Example for HR Policy Q&amp;A:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;hr_001&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;question&#34;</span>: <span style="color:#e6db74">&#34;How many weeks of parental leave do we offer?&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;expected_answer&#34;</span>: <span style="color:#e6db74">&#34;12 weeks of paid parental leave&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;relevant_doc_ids&#34;</span>: [<span style="color:#e6db74">&#34;policies/parental_leave.pdf&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;benefits&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;hr_002&#34;</span>, 
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;question&#34;</span>: <span style="color:#e6db74">&#34;What is the remote work policy for engineers?&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;expected_answer&#34;</span>: <span style="color:#e6db74">&#34;Engineers can work remotely up to 3 days per week&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;relevant_doc_ids&#34;</span>: [<span style="color:#e6db74">&#34;policies/remote_work.pdf&#34;</span>],
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;work_arrangements&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ... 18 more questions
+</span></span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h3 id="step-2-run-your-system">Step 2: Run Your System</h3>
+<p>For each question in your test dataset:</p>
+<ol>
+<li>Run retrieval to get documents</li>
+<li>Generate an answer from those documents</li>
+<li>Record what happened</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>results <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> test_dataset:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Retrieval</span>
+</span></span><span style="display:flex;"><span>    retrieved_docs <span style="color:#f92672">=</span> retrieval_system<span style="color:#f92672">.</span>search(item[<span style="color:#e6db74">&#34;question&#34;</span>], top_k<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Generation</span>
+</span></span><span style="display:flex;"><span>    answer <span style="color:#f92672">=</span> llm<span style="color:#f92672">.</span>generate(
+</span></span><span style="display:flex;"><span>        question<span style="color:#f92672">=</span>item[<span style="color:#e6db74">&#34;question&#34;</span>],
+</span></span><span style="display:flex;"><span>        context<span style="color:#f92672">=</span>retrieved_docs
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Record</span>
+</span></span><span style="display:flex;"><span>    results<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;question_id&#34;</span>: item[<span style="color:#e6db74">&#34;id&#34;</span>],
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;retrieved_docs&#34;</span>: retrieved_docs,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;generated_answer&#34;</span>: answer,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;expected_answer&#34;</span>: item[<span style="color:#e6db74">&#34;expected_answer&#34;</span>]
+</span></span><span style="display:flex;"><span>    })
+</span></span></code></pre></div><h3 id="step-3-calculate-metrics">Step 3: Calculate Metrics</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Retrieval metrics</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_mrr</span>(results, test_dataset):
+</span></span><span style="display:flex;"><span>    reciprocal_ranks <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> result <span style="color:#f92672">in</span> results:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Find position of first relevant doc</span>
+</span></span><span style="display:flex;"><span>        relevant_doc_ids <span style="color:#f92672">=</span> test_dataset[result[<span style="color:#e6db74">&#34;question_id&#34;</span>]][<span style="color:#e6db74">&#34;relevant_doc_ids&#34;</span>]
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> position, doc <span style="color:#f92672">in</span> enumerate(result[<span style="color:#e6db74">&#34;retrieved_docs&#34;</span>], start<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> doc<span style="color:#f92672">.</span>id <span style="color:#f92672">in</span> relevant_doc_ids:
+</span></span><span style="display:flex;"><span>                reciprocal_ranks<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> position)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            reciprocal_ranks<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">0</span>)  <span style="color:#75715e"># No relevant doc found</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sum(reciprocal_ranks) <span style="color:#f92672">/</span> len(reciprocal_ranks)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Generation metrics</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculate_correctness</span>(results):
+</span></span><span style="display:flex;"><span>    correct <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> result <span style="color:#f92672">in</span> results:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> llm_judge(result[<span style="color:#e6db74">&#34;generated_answer&#34;</span>], result[<span style="color:#e6db74">&#34;expected_answer&#34;</span>]) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;CORRECT&#34;</span>:
+</span></span><span style="display:flex;"><span>            correct <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> correct <span style="color:#f92672">/</span> len(results)
+</span></span></code></pre></div><h3 id="step-4-track-over-time">Step 4: Track Over Time</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Save results</span>
+</span></span><span style="display:flex;"><span>evaluation_run <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;timestamp&#34;</span>: <span style="color:#e6db74">&#34;2024-01-15&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;v1.0&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;metrics&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;mrr&#34;</span>: <span style="color:#ae81ff">0.65</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;recall@5&#34;</span>: <span style="color:#ae81ff">0.78</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;precision@5&#34;</span>: <span style="color:#ae81ff">0.82</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;correctness&#34;</span>: <span style="color:#ae81ff">0.73</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;faithfulness&#34;</span>: <span style="color:#ae81ff">0.85</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Compare to previous version</span>
+</span></span><span style="display:flex;"><span>previous_run <span style="color:#f92672">=</span> load_previous_run(<span style="color:#e6db74">&#34;v0.9&#34;</span>)
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;MRR improved from </span><span style="color:#e6db74">{</span>previous_run[<span style="color:#e6db74">&#39;mrr&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74"> to </span><span style="color:#e6db74">{</span>evaluation_run[<span style="color:#e6db74">&#39;mrr&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><hr>
+<h2 id="part-4-detailed-case-study---exaai-people-search">Part 4: Detailed Case Study - Exa.ai People Search</h2>
+<p><em>Source: <a href="https://exa.ai/blog/people-search-benchmark">https://exa.ai/blog/people-search-benchmark</a></em></p>
+<h3 id="the-problem">The Problem</h3>
+<p>Exa built a search engine to find people based on their roles, skills, and locations. For example:</p>
+<ul>
+<li>&ldquo;Senior software engineer in San Francisco&rdquo;</li>
+<li>&ldquo;VP of Product at Figma&rdquo;</li>
+<li>&ldquo;Director of sales operations in Chicago SaaS companies&rdquo;</li>
+</ul>
+<p>They indexed 1 billion people from LinkedIn profiles, company websites, and conference speaker bios.</p>
+<p><strong>Challenge:</strong> How do you know if your people search actually works?</p>
+<p>You can&rsquo;t manually test 1 billion profiles. You need systematic evaluation.</p>
+<h3 id="step-1-understanding-user-queries">Step 1: Understanding User Queries</h3>
+<p>Exa analyzed 10,000 historical search queries and found 3 patterns:</p>
+<p><strong>Pattern 1: Role-based search</strong> (most common)</p>
+<ul>
+<li>&ldquo;VP of product at Figma&rdquo;</li>
+<li>&ldquo;CTO at Stripe&rdquo;</li>
+<li>Someone looking for a specific person at a specific company</li>
+<li><strong>Ground truth:</strong> That person&rsquo;s actual profile exists or doesn&rsquo;t</li>
+</ul>
+<p><strong>Pattern 2: Skill/role discovery</strong></p>
+<ul>
+<li>&ldquo;Senior backend engineers in Austin&rdquo;</li>
+<li>&ldquo;Marketing directors with B2B SaaS experience&rdquo;</li>
+<li>Finding anyone who matches multiple criteria</li>
+<li><strong>Ground truth:</strong> Multiple correct answers, must check if results match ALL criteria</li>
+</ul>
+<p><strong>Pattern 3: Individual lookup</strong></p>
+<ul>
+<li>&ldquo;Sarah Chen at Microsoft&rdquo;</li>
+<li>Name + company affiliation</li>
+<li><strong>Ground truth:</strong> That specific person&rsquo;s profile</li>
+</ul>
+<h3 id="step-2-building-the-evaluation-dataset">Step 2: Building the Evaluation Dataset</h3>
+<p>They created <strong>1,400 test queries</strong> stratified across job functions:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Job Function</th>
+          <th>Number of Queries</th>
+          <th>Examples</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Engineering</td>
+          <td>365</td>
+          <td>&ldquo;Senior DevOps engineer&rdquo;, &ldquo;Security architect&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Marketing</td>
+          <td>180</td>
+          <td>&ldquo;Growth marketing lead&rdquo;, &ldquo;Brand manager&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Sales</td>
+          <td>160</td>
+          <td>&ldquo;Enterprise account executive&rdquo;, &ldquo;SDR manager&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Product</td>
+          <td>90</td>
+          <td>&ldquo;Senior product manager&rdquo;, &ldquo;Head of product&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Finance</td>
+          <td>85</td>
+          <td>&ldquo;FP&amp;A analyst&rdquo;, &ldquo;Controller&rdquo;</td>
+      </tr>
+      <tr>
+          <td>HR/People</td>
+          <td>100</td>
+          <td>&ldquo;People operations manager&rdquo;, &ldquo;Recruiter&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Legal</td>
+          <td>70</td>
+          <td>&ldquo;Corporate counsel&rdquo;, &ldquo;Compliance officer&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Design</td>
+          <td>100</td>
+          <td>&ldquo;Product designer&rdquo;, &ldquo;Creative director&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Data/Analytics</td>
+          <td>70</td>
+          <td>&ldquo;Data scientist&rdquo;, &ldquo;Analytics engineer&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Trust &amp; Safety</td>
+          <td>80</td>
+          <td>&ldquo;Trust &amp; Safety specialist&rdquo;, &ldquo;Policy analyst&rdquo;</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Example query structure:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query_id&#34;</span>: <span style="color:#e6db74">&#34;eng_042&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query_text&#34;</span>: <span style="color:#e6db74">&#34;Senior software engineer in San Francisco&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;engineering&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query_type&#34;</span>: <span style="color:#e6db74">&#34;role_discovery&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;criteria&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;Senior Software Engineer&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;location&#34;</span>: <span style="color:#e6db74">&#34;San Francisco&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;seniority&#34;</span>: <span style="color:#e6db74">&#34;Senior&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="step-3-choosing-evaluation-methods">Step 3: Choosing Evaluation Methods</h3>
+<p>Exa used <strong>different metrics for different query types:</strong></p>
+<p><strong>For Pattern 1 &amp; 3 (Specific person lookup):</strong></p>
+<p>Use standard retrieval metrics (Recall@k, MRR, Precision)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Example evaluation</span>
+</span></span><span style="display:flex;"><span>query <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;VP of Product at Figma&#34;</span>
+</span></span><span style="display:flex;"><span>ground_truth_profile <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;figma.com/team/jeff-weinstein&#34;</span>  <span style="color:#75715e"># The actual VP</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>results <span style="color:#f92672">=</span> search_engine<span style="color:#f92672">.</span>search(query, top_k<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check if correct profile is in results</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ground_truth_profile <span style="color:#f92672">in</span> results:
+</span></span><span style="display:flex;"><span>    position <span style="color:#f92672">=</span> results<span style="color:#f92672">.</span>index(ground_truth_profile) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    reciprocal_rank <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">/</span> position
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    reciprocal_rank <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p><strong>For Pattern 2 (Discovery queries):</strong></p>
+<p>Use <strong>LLM-as-a-judge</strong> because there&rsquo;s no single correct answer.</p>
+<p>For each result, check if it matches ALL criteria:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">evaluate_person_result</span>(query_criteria, person_profile):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Check if person matches all criteria in the query
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Returns: 1 if match, 0 if no match
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Query criteria:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - Role: </span><span style="color:#e6db74">{</span>query_criteria[<span style="color:#e6db74">&#39;role&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - Location: </span><span style="color:#e6db74">{</span>query_criteria[<span style="color:#e6db74">&#39;location&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - Seniority: </span><span style="color:#e6db74">{</span>query_criteria[<span style="color:#e6db74">&#39;seniority&#39;</span>]<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Person profile:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    </span><span style="color:#e6db74">{</span>person_profile<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Does this person match ALL criteria?
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Check:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    1. Is their role a match? (e.g., &#34;Software Engineer&#34; matches &#34;Senior Software Engineer&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    2. Is their location a match? (must be exact city)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    3. Is their seniority level correct? (Senior vs Junior vs Staff)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Reply with: MATCH or NO_MATCH
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Explain which criteria failed if NO_MATCH.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> llm_judge(prompt)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> result <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;MATCH&#34;</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><p><strong>Grading is strict:</strong></p>
+<p>Query: &ldquo;Senior software engineer in San Francisco&rdquo;</p>
+<table>
+  <thead>
+      <tr>
+          <th>Result</th>
+          <th>Role</th>
+          <th>Location</th>
+          <th>Seniority</th>
+          <th>Score</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Person A</td>
+          <td>Senior SWE</td>
+          <td>San Francisco</td>
+          <td>Senior</td>
+          <td>✅ 1</td>
+      </tr>
+      <tr>
+          <td>Person B</td>
+          <td>Senior SWE</td>
+          <td>San Diego</td>
+          <td>Senior</td>
+          <td>❌ 0 (wrong city)</td>
+      </tr>
+      <tr>
+          <td>Person C</td>
+          <td>Junior SWE</td>
+          <td>San Francisco</td>
+          <td>Junior</td>
+          <td>❌ 0 (wrong level)</td>
+      </tr>
+      <tr>
+          <td>Person D</td>
+          <td>Senior PM</td>
+          <td>San Francisco</td>
+          <td>Senior</td>
+          <td>❌ 0 (wrong role)</td>
+      </tr>
+  </tbody>
+</table>
+<p>Overall score: 1/4 = 25% precision</p>
+<h3 id="step-4-running-the-evaluation">Step 4: Running the Evaluation</h3>
+<p>Exa tested three search engines:</p>
+<p><strong>Test setup:</strong></p>
+<ul>
+<li>Same 1,400 queries for all engines</li>
+<li>Each engine returns top 10 results</li>
+<li>Measure: Recall@1 (first result correct), Recall@10 (correct answer in top 10), Precision</li>
+</ul>
+<p><strong>Results:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Search Engine</th>
+          <th>R@1</th>
+          <th>R@10</th>
+          <th>Precision</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Exa</td>
+          <td>72.0%</td>
+          <td>94.5%</td>
+          <td>63.3%</td>
+      </tr>
+      <tr>
+          <td>Brave</td>
+          <td>44.4%</td>
+          <td>77.9%</td>
+          <td>30.2%</td>
+      </tr>
+      <tr>
+          <td>Parallel</td>
+          <td>20.8%</td>
+          <td>74.7%</td>
+          <td>26.9%</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>What these numbers mean:</strong></p>
+<p><strong>Exa&rsquo;s R@1 = 72%</strong></p>
+<ul>
+<li>For 72% of queries, the first result is correct</li>
+<li>User doesn&rsquo;t need to scroll</li>
+<li>Fast, low-friction experience</li>
+</ul>
+<p><strong>Exa&rsquo;s R@10 = 94.5%</strong></p>
+<ul>
+<li>For 94.5% of queries, the correct answer appears somewhere in top 10</li>
+<li>Answer is findable, even if not first</li>
+</ul>
+<p><strong>Exa&rsquo;s Precision = 63.3%</strong></p>
+<ul>
+<li>Of all results returned, 63.3% are actually relevant</li>
+<li>Still some noise, but better than competitors</li>
+</ul>
+<p><strong>Compare to Parallel&rsquo;s R@1 = 20.8%</strong></p>
+<ul>
+<li>Only 1 in 5 queries gets the right first result</li>
+<li>Users scroll through ~5 results on average</li>
+<li>Higher friction, slower</li>
+</ul>
+<h3 id="step-5-understanding-what-made-exa-better">Step 5: Understanding What Made Exa Better</h3>
+<p>The 51% improvement in R@1 (from 21% to 72%) came from:</p>
+<p><strong>1. Fine-tuned embeddings</strong></p>
+<ul>
+<li>Trained specifically on person-query pairs</li>
+<li>&ldquo;Senior engineer in SF&rdquo; embeds close to profiles with {role: Senior Engineer, location: SF}</li>
+<li>Not general-purpose text embeddings</li>
+</ul>
+<p><strong>2. Hybrid retrieval</strong></p>
+<ul>
+<li>Semantic search (embeddings) for fuzzy matching
+<ul>
+<li>Matches &ldquo;Software Engineer&rdquo; to &ldquo;SWE&rdquo;</li>
+</ul>
+</li>
+<li>Keyword search (BM25) for exact terms
+<ul>
+<li>Ensures &ldquo;San Francisco&rdquo; doesn&rsquo;t match &ldquo;San Jose&rdquo;</li>
+</ul>
+</li>
+<li>Combined with Reciprocal Rank Fusion</li>
+</ul>
+<p><strong>3. Profile consolidation</strong></p>
+<ul>
+<li>Same person appears on LinkedIn, company site, conference speaker page</li>
+<li>System merges these into one profile</li>
+<li>Avoids duplicate results</li>
+</ul>
+<p><strong>4. Fresh data</strong></p>
+<ul>
+<li>50 million profile updates per week</li>
+<li>Job changes reflected quickly</li>
+<li>Location updates captured</li>
+</ul>
+<h3 id="key-takeaways-from-exa-case-study">Key Takeaways from Exa Case Study</h3>
+<ol>
+<li>
+<p><strong>Different query types need different evaluation methods</strong></p>
+<ul>
+<li>Factual lookups → standard metrics</li>
+<li>Open-ended discovery → LLM-as-judge</li>
+</ul>
+</li>
+<li>
+<p><strong>Strict grading prevents false positives</strong></p>
+<ul>
+<li>All criteria must match</li>
+<li>&ldquo;Close enough&rdquo; = wrong</li>
+</ul>
+</li>
+<li>
+<p><strong>Real user queries matter</strong></p>
+<ul>
+<li>10,000 historical queries → understand actual usage</li>
+<li>Synthetic queries miss real patterns</li>
+</ul>
+</li>
+<li>
+<p><strong>Public benchmarks drive progress</strong></p>
+<ul>
+<li>Open-sourcing the eval forces competitors to report same metrics</li>
+<li>Can&rsquo;t cherry-pick easy examples anymore</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="part-5-intermediate-concepts">Part 5: Intermediate Concepts</h2>
+<h3 id="llm-as-a-judge-automated-evaluation">LLM-as-a-Judge: Automated Evaluation</h3>
+<p>For large-scale testing, you can&rsquo;t manually review every answer. LLM-as-a-judge automates this.</p>
+<p><strong>How it works:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">llm_as_judge</span>(question, answer, expected_answer):
+</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    You are evaluating an AI system&#39;s answer.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Question: </span><span style="color:#e6db74">{</span>question<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Expected: </span><span style="color:#e6db74">{</span>expected_answer<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Actual: </span><span style="color:#e6db74">{</span>answer<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Rate the actual answer:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - CORRECT: Fully answers the question
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - PARTIALLY_CORRECT: Right idea but incomplete
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    - INCORRECT: Wrong or irrelevant
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Provide your rating and a brief explanation.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> gpt4(prompt)  <span style="color:#75715e"># or claude, or another strong model</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> parse_rating(response)
+</span></span></code></pre></div><p><strong>Benefits:</strong></p>
+<ul>
+<li>Scales to thousands of evaluations</li>
+<li>Consistent scoring (doesn&rsquo;t get tired like humans)</li>
+<li>Fast (seconds vs. hours for human review)</li>
+</ul>
+<p><strong>Limitations:</strong></p>
+<ul>
+<li>Has biases (covered in advanced topics)</li>
+<li>Not perfect - should be calibrated against human judgment</li>
+<li>Best used for regression testing, not absolute measurement</li>
+</ul>
+<hr>
+<blockquote>
+<p><strong>ADVANCED: LLM-as-Judge Biases</strong></p>
+<p>LLM judges have systematic biases you should know about:</p>
+<p><strong>Verbosity Bias:</strong> Judges favor longer answers even when brief answers are better.</p>
+<ul>
+<li>Solution: Include length guidance in judging prompt</li>
+</ul>
+<p><strong>Position Bias:</strong> In pairwise comparisons, judges favor the first option.</p>
+<ul>
+<li>Solution: Randomize order and run twice</li>
+</ul>
+<p><strong>Circular Logic:</strong> If judge model = generation model, it&rsquo;s biased toward its own outputs.</p>
+<ul>
+<li>Solution: Use different model family as judge</li>
+</ul>
+<p><strong>Calibration with Cohen&rsquo;s Kappa:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 1. Get human judgments on 100 samples</span>
+</span></span><span style="display:flex;"><span>human_scores <span style="color:#f92672">=</span> [evaluate_manually(q) <span style="color:#66d9ef">for</span> q <span style="color:#f92672">in</span> sample_queries[:<span style="color:#ae81ff">100</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2. Get LLM judgments on same samples</span>
+</span></span><span style="display:flex;"><span>llm_scores <span style="color:#f92672">=</span> [llm_as_judge(q) <span style="color:#66d9ef">for</span> q <span style="color:#f92672">in</span> sample_queries[:<span style="color:#ae81ff">100</span>]]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 3. Calculate agreement</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> sklearn.metrics <span style="color:#f92672">import</span> cohen_kappa_score
+</span></span><span style="display:flex;"><span>kappa <span style="color:#f92672">=</span> cohen_kappa_score(human_scores, llm_scores)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kappa &gt; 0.75: Good agreement</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kappa 0.60-0.75: Moderate agreement  </span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># kappa &lt; 0.60: Poor agreement, recalibrate judge</span>
+</span></span></code></pre></div></blockquote>
+<hr>
+<h3 id="the-precision-recall-trade-off">The Precision-Recall Trade-off</h3>
+<p>You can increase recall (finding more relevant documents) OR increase precision (returning only relevant documents), but it&rsquo;s hard to maximize both.</p>
+<p><strong>Example:</strong></p>
+<p>Your system can retrieve k documents (k = 5, 10, or 20).</p>
+<table>
+  <thead>
+      <tr>
+          <th>k value</th>
+          <th>Recall@k</th>
+          <th>Precision@k</th>
+          <th>Why</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>k=5</td>
+          <td>0.65</td>
+          <td>0.82</td>
+          <td>Few docs, most relevant, but miss some</td>
+      </tr>
+      <tr>
+          <td>k=10</td>
+          <td>0.83</td>
+          <td>0.71</td>
+          <td>More docs, find more, but some noise</td>
+      </tr>
+      <tr>
+          <td>k=20</td>
+          <td>0.91</td>
+          <td>0.58</td>
+          <td>Find almost everything, but half is junk</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>How to decide:</strong></p>
+<p>Consider your use case:</p>
+<ul>
+<li>
+<p><strong>High-stakes compliance queries:</strong> Optimize for recall (k=20)</p>
+<ul>
+<li>Missing information is worse than noise</li>
+<li>Accept lower precision</li>
+</ul>
+</li>
+<li>
+<p><strong>Fast user Q&amp;A:</strong> Optimize for precision (k=5)</p>
+<ul>
+<li>Users want quick, clean answers</li>
+<li>Accept that you&rsquo;ll miss some edge cases</li>
+</ul>
+</li>
+</ul>
+<p><strong>Real-world constraint: Latency</strong></p>
+<p>More documents = more tokens in LLM context = higher latency:</p>
+<ul>
+<li>k=5: ~2,000 tokens, 0.8s generation time</li>
+<li>k=10: ~4,000 tokens, 1.2s generation time</li>
+<li>k=20: ~8,000 tokens, 2.1s generation time</li>
+</ul>
+<p>If your SLA is &lt;1.5s response time, k=20 is not an option.</p>
+<hr>
+<blockquote>
+<p><strong>ADVANCED: The Pareto Frontier</strong></p>
+<p>You&rsquo;re optimizing three competing objectives:</p>
+<ol>
+<li>Recall (completeness)</li>
+<li>Precision (accuracy)</li>
+<li>Latency (speed)</li>
+</ol>
+<p>You cannot maximize all three. This creates a Pareto frontier - the set of optimal trade-offs.</p>
+<pre tabindex="0"><code>       High Recall
+            ^
+            |
+       B    |    A (you are here)
+            |
+     C      |
+            |
+        Low Precision -----&gt; High Precision
+</code></pre><ul>
+<li>Point A: High precision, medium recall, fast (k=5)</li>
+<li>Point B: High recall, medium precision, slow (k=20)</li>
+<li>Point C: Medium on both, medium speed (k=10)</li>
+</ul>
+<p><strong>How production teams decide:</strong></p>
+<ol>
+<li>
+<p>Set hard constraints</p>
+<ul>
+<li>Latency must be &lt; 2.0s (eliminates options above this)</li>
+<li>Cost must be &lt; $0.05/query (eliminates expensive configs)</li>
+</ul>
+</li>
+<li>
+<p>Among remaining options, optimize for primary metric</p>
+<ul>
+<li>If primary = user satisfaction → optimize precision</li>
+<li>If primary = compliance → optimize recall</li>
+</ul>
+</li>
+</ol>
+<p>From Braintrust research: &ldquo;RAG systems face strict latency requirements. Users tolerate maybe 2-3 seconds for answers. Retrieval plus generation easily exceeds this budget without optimization.&rdquo;</p>
+</blockquote>
+<hr>
+<h3 id="building-a-golden-dataset">Building a Golden Dataset</h3>
+<p>A &ldquo;golden dataset&rdquo; is your regression test suite. It&rsquo;s called &ldquo;golden&rdquo; because:</p>
+<ul>
+<li>Carefully curated from real failures</li>
+<li>Manually annotated by experts</li>
+<li>Small enough to reason about (50-100 queries)</li>
+<li>Represents your actual query distribution</li>
+</ul>
+<p><strong>How to build one:</strong></p>
+<p><strong>Step 1: Collect failure cases</strong></p>
+<p>Look for:</p>
+<ul>
+<li>Support tickets that required escalation</li>
+<li>Questions that got wrong answers</li>
+<li>Queries that returned &ldquo;I don&rsquo;t know&rdquo; but should have answered</li>
+<li>Edge cases that exposed gaps</li>
+</ul>
+<p><strong>Step 2: Stratify by category</strong></p>
+<p>Example for billing Q&amp;A system:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Category</th>
+          <th>Count</th>
+          <th>Example Query</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Proration</td>
+          <td>15</td>
+          <td>&ldquo;How do we handle mid-cycle upgrades?&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Credits</td>
+          <td>12</td>
+          <td>&ldquo;Can credits roll over to next month?&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Invoicing</td>
+          <td>18</td>
+          <td>&ldquo;When are invoices generated?&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Taxes</td>
+          <td>10</td>
+          <td>&ldquo;How is sales tax calculated?&rdquo;</td>
+      </tr>
+      <tr>
+          <td>Edge cases</td>
+          <td>20</td>
+          <td>&ldquo;What if customer downgrades same day as upgrade?&rdquo;</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Step 3: Annotate thoroughly</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query_id&#34;</span>: <span style="color:#e6db74">&#34;billing_015&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;query&#34;</span>: <span style="color:#e6db74">&#34;How do we handle proration when customer upgrades mid-cycle?&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;expected_answer&#34;</span>: <span style="color:#e6db74">&#34;We use day-based proration. Credit unused days from old plan, charge prorated amount for new plan.&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;relevant_doc_ids&#34;</span>: [
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;docs/proration_logic.md&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;docs/billing_calculations.md&#34;</span>
+</span></span><span style="display:flex;"><span>  ],
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;category&#34;</span>: <span style="color:#e6db74">&#34;proration&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;difficulty&#34;</span>: <span style="color:#e6db74">&#34;medium&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;requires_calculation&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;should_refuse&#34;</span>: <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><strong>Step 4: Get expert review</strong></p>
+<p>Have domain experts validate:</p>
+<ul>
+<li>Is the expected answer correct?</li>
+<li>Are the relevant docs complete?</li>
+<li>Is the difficulty rating accurate?</li>
+</ul>
+<hr>
+<h2 id="part-6-continuous-evaluation">Part 6: Continuous Evaluation</h2>
+<h3 id="automated-testing-pipeline">Automated Testing Pipeline</h3>
+<p>Once you have a golden dataset, integrate it into your development workflow:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># ci_cd_pipeline.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">run_evaluation_suite</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Run before every deployment&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Load golden dataset</span>
+</span></span><span style="display:flex;"><span>    golden_dataset <span style="color:#f92672">=</span> load_golden_dataset()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Run current system</span>
+</span></span><span style="display:flex;"><span>    results <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> query <span style="color:#f92672">in</span> golden_dataset:
+</span></span><span style="display:flex;"><span>        retrieved <span style="color:#f92672">=</span> retrieval_system<span style="color:#f92672">.</span>search(query[<span style="color:#e6db74">&#34;question&#34;</span>])
+</span></span><span style="display:flex;"><span>        answer <span style="color:#f92672">=</span> llm<span style="color:#f92672">.</span>generate(query[<span style="color:#e6db74">&#34;question&#34;</span>], retrieved)
+</span></span><span style="display:flex;"><span>        results<span style="color:#f92672">.</span>append({
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;query_id&#34;</span>: query[<span style="color:#e6db74">&#34;id&#34;</span>],
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;answer&#34;</span>: answer,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;retrieved&#34;</span>: retrieved
+</span></span><span style="display:flex;"><span>        })
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Calculate metrics</span>
+</span></span><span style="display:flex;"><span>    metrics <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;mrr&#34;</span>: calculate_mrr(results, golden_dataset),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;recall@5&#34;</span>: calculate_recall_at_k(results, golden_dataset, k<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;correctness&#34;</span>: calculate_correctness(results, golden_dataset),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;faithfulness&#34;</span>: calculate_faithfulness(results, golden_dataset)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Check thresholds</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> metrics[<span style="color:#e6db74">&#34;correctness&#34;</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0.85</span>, <span style="color:#e6db74">&#34;Correctness below threshold!&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">assert</span> metrics[<span style="color:#e6db74">&#34;faithfulness&#34;</span>] <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0.90</span>, <span style="color:#e6db74">&#34;Faithfulness below threshold!&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> metrics
+</span></span></code></pre></div><p><strong>When to run:</strong></p>
+<ul>
+<li>Before every deployment (CI/CD)</li>
+<li>After changing retrieval logic</li>
+<li>After updating document corpus</li>
+<li>When switching LLM models</li>
+<li>Daily as a sanity check</li>
+</ul>
+<h3 id="ab-testing-in-production">A/B Testing in Production</h3>
+<p>Golden datasets don&rsquo;t capture real user behavior. You need production testing.</p>
+<p><strong>Setup:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Route 90% to version A, 10% to version B</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle_query</span>(user_query):
+</span></span><span style="display:flex;"><span>    user_id <span style="color:#f92672">=</span> get_user_id()
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> hash(user_id) <span style="color:#f92672">%</span> <span style="color:#ae81ff">100</span> <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">90</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Version A (current production)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> version_a<span style="color:#f92672">.</span>answer(user_query)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Version B (new candidate)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> version_b<span style="color:#f92672">.</span>answer(user_query)
+</span></span></code></pre></div><p><strong>Track metrics:</strong></p>
+<ul>
+<li>User feedback (thumbs up/down)</li>
+<li>Follow-up question rate (did first answer satisfy?)</li>
+<li>Session length</li>
+<li>Task completion rate</li>
+</ul>
+<p><strong>Decision criteria:</strong></p>
+<p>After 2 weeks:</p>
+<ul>
+<li>If Version B&rsquo;s thumbs up rate &gt; Version A&rsquo;s: ramp B to 50%</li>
+<li>Monitor for 1 more week</li>
+<li>If still better: ramp B to 100%</li>
+<li>If worse at any point: rollback to A</li>
+</ul>
+<hr>
+<h2 id="part-7-advanced-topics">Part 7: Advanced Topics</h2>
+<h3 id="graphrag-for-cross-document-reasoning">GraphRAG for Cross-Document Reasoning</h3>
+<blockquote>
+<p><strong>ADVANCED TOPIC</strong></p>
+<p><strong>The Problem:</strong></p>
+<p>Traditional RAG fails on questions like:</p>
+<ul>
+<li>&ldquo;What are the main themes across all Q4 board decks?&rdquo;</li>
+<li>&ldquo;How has our security posture evolved over the past year?&rdquo;</li>
+<li>&ldquo;What consistent patterns appear in customer feedback?&rdquo;</li>
+</ul>
+<p>These require synthesizing information across many documents. You can&rsquo;t answer by retrieving 5 chunks.</p>
+<p><strong>GraphRAG Approach:</strong></p>
+<ol>
+<li>
+<p><strong>Build knowledge graph</strong></p>
+<ul>
+<li>Extract entities (companies, people, concepts)</li>
+<li>Extract relationships between entities</li>
+<li>Store as graph: nodes = entities, edges = relationships</li>
+</ul>
+</li>
+<li>
+<p><strong>Detect communities</strong></p>
+<ul>
+<li>Find clusters of related entities</li>
+<li>Example: All entities related to &ldquo;product development&rdquo; form one community</li>
+</ul>
+</li>
+<li>
+<p><strong>Generate community summaries</strong></p>
+<ul>
+<li>Each community gets an LLM-generated summary</li>
+<li>These summaries become the retrieval units</li>
+</ul>
+</li>
+<li>
+<p><strong>Query-time synthesis</strong></p>
+<ul>
+<li>Retrieve relevant community summaries</li>
+<li>Synthesize into final answer</li>
+</ul>
+</li>
+</ol>
+<p><strong>Trade-off:</strong></p>
+<ul>
+<li>Much better for global questions</li>
+<li>40x more expensive to build index</li>
+<li>Overkill for simple fact lookup</li>
+</ul>
+<p><strong>When to use:</strong></p>
+<ul>
+<li>10% of queries that need cross-document synthesis</li>
+<li>Use regular RAG for the other 90%</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="drift-detection">Drift Detection</h3>
+<blockquote>
+<p><strong>ADVANCED TOPIC</strong></p>
+<p>Your system&rsquo;s performance can degrade over time even without code changes:</p>
+<p><strong>Behavioral Drift:</strong> Model gets worse</p>
+<ul>
+<li>Provider updates the model</li>
+<li>Performance degrades</li>
+<li>Detection: Track metrics over time, alert if drop &gt;10%</li>
+</ul>
+<p><strong>Concept Drift:</strong> User queries shift</p>
+<ul>
+<li>Users start asking about &ldquo;AI agents&rdquo;</li>
+<li>Your docs use term &ldquo;autonomous systems&rdquo;</li>
+<li>Embeddings miss the connection</li>
+<li>Detection: Track query distribution, alert if significant shift</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># Weekly drift check</span>
+</span></span><span style="display:flex;"><span>current_week_queries <span style="color:#f92672">=</span> get_queries(last_7_days)
+</span></span><span style="display:flex;"><span>baseline_queries <span style="color:#f92672">=</span> golden_dataset_queries
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Cluster and compare distributions</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> scipy.spatial.distance <span style="color:#f92672">import</span> jensenshannon
+</span></span><span style="display:flex;"><span>divergence <span style="color:#f92672">=</span> jensenshannon(
+</span></span><span style="display:flex;"><span>    cluster_distribution(current_week_queries),
+</span></span><span style="display:flex;"><span>    cluster_distribution(baseline_queries)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> divergence <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.3</span>:
+</span></span><span style="display:flex;"><span>    alert(<span style="color:#e6db74">&#34;Query distribution has shifted significantly&#34;</span>)
+</span></span></code></pre></div></blockquote>
+<hr>
+<h3 id="refusal-accuracy">Refusal Accuracy</h3>
+<blockquote>
+<p><strong>ADVANCED TOPIC</strong></p>
+<p>In high-stakes domains, saying &ldquo;I don&rsquo;t know&rdquo; when uncertain is safer than hallucinating.</p>
+<p><strong>Metrics:</strong></p>
+<p><strong>Refusal Precision:</strong> When system refuses, is it correct to refuse?</p>
+<ul>
+<li>System refused 20 queries</li>
+<li>18 were actually unanswerable</li>
+<li>Refusal Precision = 18/20 = 90%</li>
+</ul>
+<p><strong>Refusal Recall:</strong> When system should refuse, does it?</p>
+<ul>
+<li>25 queries were unanswerable</li>
+<li>System refused 18 of them</li>
+<li>Refusal Recall = 18/25 = 72%</li>
+</ul>
+<p>The system hallucinated answers for 7 queries it should have refused.</p>
+<p><strong>Implementation:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_answer</span>(query, retrieved_chunks):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Filter low-confidence chunks</span>
+</span></span><span style="display:flex;"><span>    high_conf <span style="color:#f92672">=</span> [c <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> retrieved_chunks <span style="color:#66d9ef">if</span> c<span style="color:#f92672">.</span>score <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0.75</span>]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> high_conf:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;I don&#39;t have enough information to answer this.&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> max(c<span style="color:#f92672">.</span>score <span style="color:#66d9ef">for</span> c <span style="color:#f92672">in</span> retrieved_chunks) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0.80</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;I&#39;m not confident in the retrieved information.&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Proceed with generation</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> llm<span style="color:#f92672">.</span>generate(query, high_conf)
+</span></span></code></pre></div></blockquote>
+<hr>
+
+      </div>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <a class="essay-link" href="/essays/">Back to essays</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-text">© 2026 Deeptanshu Jha.</p>
+    </div>
+  </footer>
+
+  <script src="/js/site.js"></script>
+</body>
+</html>

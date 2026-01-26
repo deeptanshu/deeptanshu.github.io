@@ -406,3 +406,55 @@ footer {
   font-size: 0.78rem;
   font-weight: 500;
 }
+
+
+/* Links inside project/essay text should match theme */
+.project-description a,
+.essay-excerpt a,
+.essay-card a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.35);
+  transition: border-color 0.2s var(--ease-smooth), color 0.2s var(--ease-smooth);
+}
+
+.project-description a:hover,
+.essay-excerpt a:hover,
+.essay-card a:hover {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-accent);
+}
+
+/* Avoid purple visited links */
+.project-description a:visited,
+.essay-excerpt a:visited,
+.essay-card a:visited {
+  color: var(--color-accent);
+}
+
+
+/* Links inside project cards */
+.project-content a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.35);
+}
+
+.project-content a:hover {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-accent);
+}
+
+.project-content a:visited {
+  color: var(--color-accent);
+}
+
+/* Give the markdown content some breathing room before tags */
+.project-description {
+  margin-bottom: 0.9rem;
+}
+
+/* Ensure tags never collide with the line above */
+.project-tags {
+  margin-top: 0.6rem;
+}

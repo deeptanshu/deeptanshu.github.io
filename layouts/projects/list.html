@@ -26,12 +26,19 @@
             {{ with .Params.subtitle }}
               <p class="project-description">{{ . }}</p>
             {{ end }}
+{{ if .Content }}
+  <div class="project-description">{{ .Content }}</div>
+{{ end }}
 
-            {{ with .Params.github }}
-              <div style="margin-top: 0.8rem;">
-                <a class="essay-link" href="{{ . }}" target="_blank" rel="noopener">View on GitHub</a>
-              </div>
-            {{ end }}
+{{ with .Params.tags }}
+  <div class="project-tags">
+    {{ range . }}
+      <span class="tag">{{ . }}</span>
+    {{ end }}
+  </div>
+{{ end }}
+
+
           </div>
         </div>
       {{ end }}

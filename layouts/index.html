@@ -92,7 +92,18 @@
             {{ with .Params.label }}{{ . }}{{ else }}Project{{ end }}
           </div>
           <div class="project-content">
-            <h3>{{ .Title }}</h3>
+{{ $p := . }}
+<h3>
+  {{ with $p.Params.github }}
+    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">
+      {{ $p.Title }}
+    </a>
+  {{ else }}
+    <a href="{{ $p.RelPermalink }}" style="color:inherit; text-decoration:none;">
+      {{ $p.Title }}
+    </a>
+  {{ end }}
+</h3>
             <p class="project-description">
               {{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}
             </p>
@@ -101,9 +112,7 @@
                 <span class="tag">{{ . }}</span>
               {{ end }}
             </div>
-            <div style="margin-top: 0.9rem;">
-              <a class="essay-link" href="{{ .RelPermalink }}">Open</a>
-            </div>
+
           </div>
         </div>
       {{ end }}
