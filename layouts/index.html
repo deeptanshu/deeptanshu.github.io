@@ -10,14 +10,7 @@
           Focused on building intelligent systems that scale responsibly and safely.
         </p>
 
-        <div class="expertise-tags">
-          <span class="expertise-tag">AI Product Management</span>
-          <span class="expertise-tag">Fintech Infrastructure</span>
-          <span class="expertise-tag">Billing Systems</span>
-          <span class="expertise-tag">LLM Applications</span>
-          <span class="expertise-tag">Developer Tools</span>
-          <span class="expertise-tag">Growth Strategy</span>
-        </div>
+
 
         <div class="socials">
           <a href="https://linkedin.com/in/deeptanshujha" class="social-link" target="_blank" rel="noopener">LinkedIn</a>
@@ -39,7 +32,7 @@
           </div>
           <div class="fact-item">
             <span class="fact-label">Focus</span>
-            <span class="fact-value">AI + Billing + Dev Tools</span>
+            <span class="fact-value">AI + Billing + Growth</span>
           </div>
           <div class="fact-item">
             <span class="fact-label">Writing</span>
@@ -70,9 +63,10 @@
             {{ with .Params.category }}{{ . }} · {{ end }}{{ .Date.Format "Jan 2006" }}
           </div>
           <h3 class="essay-title">{{ .Title }}</h3>
-          <p class="essay-excerpt">
-            {{ if .Params.excerpt }}{{ .Params.excerpt }}{{ else }}{{ .Summary }}{{ end }}
-          </p>
+          {{ with .Params.excerpt }}
+  <p class="essay-excerpt">{{ . }}</p>
+{{ end }}
+
           <a href="{{ .RelPermalink }}" class="essay-link">Read</a>
         </article>
       {{ end }}

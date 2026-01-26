@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="{{ "/css/site.css" | relURL }}">
 </head>
-<body>
+<body class="{{ if .IsHome }}home{{ else }}page{{ end }}">
   <!-- Navigation -->
   <nav>
     <div class="nav-container">
@@ -41,7 +41,9 @@
     </div>
   </nav>
 
+<main class="main">
   {{ block "main" . }}{{ end }}
+</main>
 
   <footer>
     <div class="container">

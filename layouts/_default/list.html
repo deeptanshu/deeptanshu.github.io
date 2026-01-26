@@ -1,0 +1,102 @@
+{{ define "main" }}
+<section>
+  <div class="container">
+    {{ if eq .Section "essays" }}
+      <div class="section-header visible">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Essays</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="essays-grid">
+        {{ range .Pages.ByDate.Reverse }}
+          <article class="essay-card visible">
+            <div class="essay-meta">
+              {{ with .Params.category }}{{ . }} · {{ end }}{{ .Date.Format "Jan 2006" }}
+            </div>
+
+            <h3 class="essay-title">
+              <a href="{{ .RelPermalink }}" style="color:inherit; text-decoration:none;">
+                {{ .Title }}
+              </a>
+            </h3>
+
+            {{ with .Params.excerpt }}
+              <p class="essay-excerpt">{{ . }}</p>
+            {{ end }}
+
+            {{ with .Params.tags }}
+              <div class="mini-tags">
+                {{ range . }}
+                  <span class="mini-tag">{{ . }}</span>
+                {{ end }}
+              </div>
+            {{ end }}
+
+            <a href="{{ .RelPermalink }}" class="essay-link">Read</a>
+          </article>
+        {{ end }}
+      </div>
+
+    {{ else if eq .Section "projects" }}
+      <div class="section-header visible">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Projects</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="projects-list">
+        {{ range .Pages.ByDate.Reverse }}
+          <div class="project visible">
+            <div class="project-label">{{ .Params.label | default "Project" }}</div>
+
+            <div class="project-content">
+              <h3>
+                <a href="{{ .RelPermalink }}" style="color:inherit; text-decoration:none;">
+                  {{ .Title }}
+                </a>
+              </h3>
+
+              {{ with .Params.description }}
+                <p class="project-description">{{ . }}</p>
+              {{ end }}
+
+              {{ with .Params.tags }}
+                <div class="project-tags">
+                  {{ range . }}
+                    <span class="tag">{{ . }}</span>
+                  {{ end }}
+                </div>
+              {{ end }}
+
+              <div style="margin-top: 0.9rem;">
+                <a class="essay-link" href="{{ .RelPermalink }}">Open</a>
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+
+    {{ else }}
+      <div class="section-header visible">
+        <span class="section-number">00</span>
+        <h2 class="section-title">{{ .Title }}</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="essays-grid">
+        {{ range .Pages.ByDate.Reverse }}
+          <article class="essay-card visible">
+            <h3 class="essay-title">
+              <a href="{{ .RelPermalink }}" style="color:inherit; text-decoration:none;">
+                {{ .Title }}
+              </a>
+            </h3>
+            <a href="{{ .RelPermalink }}" class="essay-link">Open</a>
+          </article>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
