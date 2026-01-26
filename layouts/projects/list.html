@@ -13,15 +13,19 @@
           <div class="project-label">{{ .Params.label | default "Project" }}</div>
 
           <div class="project-content">
+{{ $p := . }}
 <h3>
-  {{ with .Params.github }}
-    <a href="{{ . }}" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">
-      {{ $.Title }}
+  {{ with $p.Params.github }}
+    <a href="{{ . }}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:none;">
+      {{ $p.Title }}
     </a>
   {{ else }}
-    {{ $.Title }}
+    <a href="{{ $p.RelPermalink }}" style="color:inherit; text-decoration:none;">
+      {{ $p.Title }}
+    </a>
   {{ end }}
 </h3>
+
 
             {{ with .Params.subtitle }}
               <p class="project-description">{{ . }}</p>
