@@ -6,8 +6,19 @@
     <description>Recent content in Essays on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jan 2026 13:45:00 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 25 Jan 2026 22:48:41 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/essays/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Strange Habits of LLMs: Oops I Did It Again</title>
+      <link>http://localhost:1313/essays/strange-habits-of-llms/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>http://localhost:1313/essays/strange-habits-of-llms/</guid>
+      <description>&lt;p&gt;I was fixing a bug for my newborn&amp;rsquo;s app and ChatGPT had a complete brain-body disconnect:&lt;/p&gt;
+&lt;p&gt;It kept reasoning &amp;ldquo;don&amp;rsquo;t do the thing&amp;rdquo; → did it → &amp;ldquo;oops I did this&amp;rdquo; → redo → &amp;ldquo;oops I did it again&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;In the SAME response. Five times. (See pic)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Five attempts. Same mistake. Every single time.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I couldn&amp;rsquo;t resist trying to anthropomorphize this: if this were a human, why would they do this?&lt;/p&gt;</description>
+    </item>
     <item>
       <title>AI Evals: What I learned shipping production grade billing systems</title>
       <link>http://localhost:1313/essays/realwordevals/</link>

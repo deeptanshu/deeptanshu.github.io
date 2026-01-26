@@ -6,8 +6,29 @@
     <description>Recent content in Tags on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jan 2026 00:00:00 -0800</lastBuildDate>
+    <lastBuildDate>Sun, 25 Jan 2026 22:48:41 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Autoregressive</title>
+      <link>http://localhost:1313/tags/autoregressive/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>http://localhost:1313/tags/autoregressive/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LLMs</title>
+      <link>http://localhost:1313/tags/llms/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>http://localhost:1313/tags/llms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Psychology</title>
+      <link>http://localhost:1313/tags/psychology/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>http://localhost:1313/tags/psychology/</guid>
+      <description></description>
+    </item>
     <item>
       <title>NLP</title>
       <link>http://localhost:1313/tags/nlp/</link>
