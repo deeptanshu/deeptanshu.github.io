@@ -1,5 +1,5 @@
 {{ define "main" }}
-<section style="padding-top: 6rem;">
+<section>
   <div class="container">
     <div class="section-header visible">
       <span class="section-number">02</span>
@@ -10,22 +10,28 @@
     <div class="projects-list">
       {{ range .Pages.ByDate.Reverse }}
         <div class="project visible">
-          <div class="project-label">
-            {{ with .Params.label }}{{ . }}{{ else }}Project{{ end }}
-          </div>
+          <div class="project-label">{{ .Params.label | default "Project" }}</div>
+
           <div class="project-content">
-            <h3>{{ .Title }}</h3>
-            <p class="project-description">
-              {{ if .Params.description }}{{ .Params.description }}{{ else }}{{ .Summary }}{{ end }}
-            </p>
-            <div class="project-tags">
-              {{ range (.Params.tags | default (slice)) }}
-                <span class="tag">{{ . }}</span>
-              {{ end }}
-            </div>
-            <div style="margin-top: 0.9rem;">
-              <a class="essay-link" href="{{ .RelPermalink }}">Open</a>
-            </div>
+<h3>
+  {{ with .Params.github }}
+    <a href="{{ . }}" target="_blank" rel="noopener" style="color:inherit; text-decoration:none;">
+      {{ $.Title }}
+    </a>
+  {{ else }}
+    {{ $.Title }}
+  {{ end }}
+</h3>
+
+            {{ with .Params.subtitle }}
+              <p class="project-description">{{ . }}</p>
+            {{ end }}
+
+            {{ with .Params.github }}
+              <div style="margin-top: 0.8rem;">
+                <a class="essay-link" href="{{ . }}" target="_blank" rel="noopener">View on GitHub</a>
+              </div>
+            {{ end }}
           </div>
         </div>
       {{ end }}
