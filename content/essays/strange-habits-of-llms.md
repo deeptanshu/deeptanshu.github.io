@@ -1,7 +1,7 @@
 ---
 title: "Strange Habits of LLMs: Oops I Did It Again"
 date: 2026-01-25T22:48:41-08:00
-draft: true
+draft: false
 category: ""
 excerpt: "I was fixing a bug for my newborn's app and ChatGPT had a complete brain-body disconnect: It kept reasoning 'don't do the thing' → did it → 'oops I did this' → redo → 'oops I did it again'"
 tags: [LLMs, Autoregressive, Psychology,]
