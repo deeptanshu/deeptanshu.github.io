@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>LLMs on Deeptanshu Jha</title>
-    <link>http://localhost:1313/tags/llms/</link>
-    <description>Recent content in LLMs on Deeptanshu Jha</description>
+    <title>SLMs on Deeptanshu Jha</title>
+    <link>http://localhost:1313/tags/slms/</link>
+    <description>Recent content in SLMs on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 26 Jan 2026 21:45:48 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/llms/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/slms/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>When Small Models Are Better: A Peek into Geometry of Intelligence</title>
       <link>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</link>
@@ -18,17 +18,6 @@
 &lt;hr&gt;
 &lt;p&gt;We have a &lt;strong&gt;&amp;ldquo;sledgehammer&amp;rdquo; problem&lt;/strong&gt; in AI.&lt;/p&gt;
 &lt;p&gt;We are using massive, 100B+ parameter models to fix typos, format markdown, and summarize transcripts—tasks that are closer to &lt;strong&gt;doing long division with a supercomputer&lt;/strong&gt; than “needing intelligence.”&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Strange Habits of LLMs: Oops I Did It Again</title>
-      <link>http://localhost:1313/essays/strange-habits-of-llms/</link>
-      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
-      <guid>http://localhost:1313/essays/strange-habits-of-llms/</guid>
-      <description>&lt;p&gt;I was fixing a bug for my newborn&amp;rsquo;s app and ChatGPT had a complete brain-body disconnect:&lt;/p&gt;
-&lt;p&gt;It kept reasoning &amp;ldquo;don&amp;rsquo;t do the thing&amp;rdquo; → did it → &amp;ldquo;oops I did this&amp;rdquo; → redo → &amp;ldquo;oops I did it again&amp;rdquo;&lt;/p&gt;
-&lt;p&gt;In the SAME response. Five times. (See pic)&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Five attempts. Same mistake. Every single time.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;I couldn&amp;rsquo;t resist trying to anthropomorphize this: if this were a human, why would they do this?&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

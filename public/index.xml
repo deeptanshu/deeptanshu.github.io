@@ -6,8 +6,30 @@
     <description>Recent content in Home on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jan 2026 22:48:41 -0800</lastBuildDate>
+    <lastBuildDate>Mon, 26 Jan 2026 21:45:48 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>When Small Models Are Better: A Peek into Geometry of Intelligence</title>
+      <link>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</guid>
+      <description>&lt;h3 id=&#34;tldr&#34;&gt;TL;DR&lt;/h3&gt;
+&lt;p&gt;Most everyday prompts are &lt;strong&gt;local manifold walks&lt;/strong&gt;: the meaning stays in the same semantic basin, you’re just changing &lt;em&gt;shape&lt;/em&gt; (summary, tone, structure). Small models are great at this. Big models are best when the task demands &lt;strong&gt;global consistency&lt;/strong&gt; and multi-hop synthesis.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;We have a &lt;strong&gt;&amp;ldquo;sledgehammer&amp;rdquo; problem&lt;/strong&gt; in AI.&lt;/p&gt;
+&lt;p&gt;We are using massive, 100B+ parameter models to fix typos, format markdown, and summarize transcripts—tasks that are closer to &lt;strong&gt;doing long division with a supercomputer&lt;/strong&gt; than “needing intelligence.”&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Claude Code Rate Limits: Diagnosing my token usage </title>
+      <link>http://localhost:1313/essays/claude-code-rate-limits-token-budgets/</link>
+      <pubDate>Mon, 26 Jan 2026 21:04:07 -0800</pubDate>
+      <guid>http://localhost:1313/essays/claude-code-rate-limits-token-budgets/</guid>
+      <description>&lt;p&gt;Every few hours using Claude Code, I hit a wall. It is incredibly frustrating to be mid-flow and get locked out by a rate limit. After burning through roughly &lt;strong&gt;44 million tokens&lt;/strong&gt; and a &lt;strong&gt;$67.58 bill&lt;/strong&gt;, I dug into the logs to find out why.&lt;/p&gt;
+&lt;p&gt;The data shows I wasn&amp;rsquo;t paying for intelligence. I was paying a &amp;ldquo;memory tax&amp;rdquo; for conversations that never ended.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;the-68-breakdown&#34;&gt;The $68 breakdown&lt;/h2&gt;
+&lt;p&gt;In about 17 days, I made nearly 500 requests. Here is where the money actually went:&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Strange Habits of LLMs: Oops I Did It Again</title>
       <link>http://localhost:1313/essays/strange-habits-of-llms/</link>

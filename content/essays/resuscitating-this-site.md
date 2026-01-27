@@ -2,6 +2,8 @@
 title: "Rebuilding (resuscitating) this site"
 date: 2026-01-24T22:10:00-08:00
 draft: false
+category: "Miscellaneous"
+excerpt: "Product lessons: atomic desires, two way doors, and future complexity backseat"
 tags: ["building", "product"]
 ---
 

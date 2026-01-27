@@ -2,7 +2,7 @@
 title: "AI Evals: What I learned shipping production grade billing systems"
 date: 2026-01-25T13:45:00-08:00
 draft: false
-category: "AI Evals"
+category: "RAG"
 excerpt: "From Evals 101 to Production Grade systems."
 ---
 

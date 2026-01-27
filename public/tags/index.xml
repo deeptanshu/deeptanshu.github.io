@@ -6,20 +6,41 @@
     <description>Recent content in Tags on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jan 2026 22:48:41 -0800</lastBuildDate>
+    <lastBuildDate>Mon, 26 Jan 2026 21:45:48 -0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Autoregressive</title>
-      <link>http://localhost:1313/tags/autoregressive/</link>
-      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
-      <guid>http://localhost:1313/tags/autoregressive/</guid>
+      <title>AI</title>
+      <link>http://localhost:1313/tags/ai/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>http://localhost:1313/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>LLMs</title>
       <link>http://localhost:1313/tags/llms/</link>
-      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
       <guid>http://localhost:1313/tags/llms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SLMs</title>
+      <link>http://localhost:1313/tags/slms/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>http://localhost:1313/tags/slms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Transformers</title>
+      <link>http://localhost:1313/tags/transformers/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>http://localhost:1313/tags/transformers/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Autoregressive</title>
+      <link>http://localhost:1313/tags/autoregressive/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>http://localhost:1313/tags/autoregressive/</guid>
       <description></description>
     </item>
     <item>

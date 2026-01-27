@@ -2,25 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/tags/autoregressive/</loc>
-    <lastmod>2026-01-25T22:48:41-08:00</lastmod>
+    <loc>http://localhost:1313/tags/ai/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/essays/</loc>
-    <lastmod>2026-01-25T22:48:41-08:00</lastmod>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-01-25T22:48:41-08:00</lastmod>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/llms/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/slms/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/transformers/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</loc>
+    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/essays/claude-code-rate-limits-token-budgets/</loc>
+    <lastmod>2026-01-26T21:04:07-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/autoregressive/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/psychology/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/essays/strange-habits-of-llms/</loc>
-    <lastmod>2026-01-25T22:48:41-08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/essays/realwordevals/</loc>

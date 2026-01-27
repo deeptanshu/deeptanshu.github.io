@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>When Small Models Are Better: A Peek into Geometry of Intelligence · Deeptanshu Jha</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/site.css">
+</head>
+<body class="page">
+  
+  <nav>
+    <div class="nav-container">
+      <a href="/" class="nav-logo">Deeptanshu Jha</a>
+      <div class="nav-links">
+        <a href="/#essays" class="nav-link">Essays</a>
+        <a href="/#projects" class="nav-link">Projects</a>
+        <a href="/essays/" class="nav-link">All posts</a>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="moonIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+<main class="main">
+  
+<section style="padding-top: 6rem;">
+  <div class="container" style="max-width: 850px;">
+    <div class="essay-meta" style="margin-bottom: 0.8rem;">
+      LLMs · Jan 26, 2026
+    </div>
+    <h1 class="section-title" style="margin-bottom: 1rem;">When Small Models Are Better: A Peek into Geometry of Intelligence</h1>
+
+    <div class="essay-card visible" style="padding: 2rem;">
+      <div class="prose">
+        <h3 id="tldr">TL;DR</h3>
+<p>Most everyday prompts are <strong>local manifold walks</strong>: the meaning stays in the same semantic basin, you’re just changing <em>shape</em> (summary, tone, structure). Small models are great at this. Big models are best when the task demands <strong>global consistency</strong> and multi-hop synthesis.</p>
+<hr>
+<p>We have a <strong>&ldquo;sledgehammer&rdquo; problem</strong> in AI.</p>
+<p>We are using massive, 100B+ parameter models to fix typos, format markdown, and summarize transcripts—tasks that are closer to <strong>doing long division with a supercomputer</strong> than “needing intelligence.”</p>
+<p>I have previously written about the frustrating experience of running into the <strong>Token Wall</strong> in Claude Code almost every session. To stay under rate limits and be resource-responsible, we need a routing framework based on the <strong>topology of the task</strong>.</p>
+<hr>
+<h2 id="1-the-geometry-reshaping-vs-creating">1. The Geometry: Reshaping vs. Creating</h2>
+<p>To understand why small models (SLMs) excel at certain tasks, we have to look at the <strong>latent space</strong>.</p>
+<p>Imagine all possible human thoughts as a topographic map (a manifold). Large models have the &ldquo;depth&rdquo; to fly across the entire map, connecting distant continents of logic. Small models, however, are masters of the <strong>local neighborhood</strong>.</p>
+<h3 id="the-local-manifold-walk">The “Local Manifold Walk”</h3>
+<p>When you ask a model to <em>&ldquo;make this sound like a LinkedIn post,&rdquo;</em> you aren&rsquo;t asking for a new discovery. You are asking for a <strong>local manifold walk</strong>.</p>
+<p>The original meaning and the rewritten meaning occupy the same semantic basin.</p>
+<p>In vector terms:</p>
+<p>$$
+\vec{v}<em>{input} \approx \vec{v}</em>{output}
+$$</p>
+<p>The task is simply to find a different set of tokens that project onto the same coordinate. Since the &ldquo;map&rdquo; is already built into the SLM’s embeddings, it doesn&rsquo;t need 100 layers to find the exit.</p>
+<hr>
+<h2 id="2-the-slm-framework-reshape-refine-extract">2. The SLM Framework: Reshape, Refine, Extract</h2>
+<p>If your query fits into one of these three buckets, route it to a local model (like <em>Llama 3.2 3B</em> or <em>Phi-3.5</em>) and save your Claude tokens for the hard stuff.</p>
+<h3 id="a-reshaping-information-reorganization">A. Reshaping (Information Reorganization)</h3>
+<p><strong>Task:</strong> Summaries, outlines, turning a CSV into a JSON.</p>
+<p><strong>Why SLMs win:</strong> This is <strong>attention salience</strong>. The model isn&rsquo;t learning new concepts; it’s just re-weighting the importance of tokens already in your prompt. It identifies the high-salience vectors and re-emits them in a cleaner order.</p>
+<h3 id="b-refining-tone-and-style">B. Refining (Tone and Style)</h3>
+<p><strong>Task:</strong> &ldquo;Tighten this up,&rdquo; &ldquo;Fix my grammar,&rdquo; &ldquo;Make this more assertive.&rdquo;</p>
+<p><strong>Why SLMs win:</strong> This is a <strong>projection</strong> task. The model maps the input to a &ldquo;style&rdquo; subspace. This is &ldquo;cheap&rdquo; because the global semantic structure remains constant.</p>
+<h3 id="c-extracting-pattern-snapping">C. Extracting (Pattern Snapping)</h3>
+<p><strong>Task:</strong> &ldquo;Give me the action items,&rdquo; &ldquo;What was the decision made in this meeting?&rdquo;</p>
+<p><strong>Why SLMs win:</strong> This is <strong>classification + extraction</strong>. The model has learned the &ldquo;shape&rdquo; of an action item. It simply scans the text until a span of tokens &ldquo;snaps&rdquo; into that latent pattern.</p>
+<hr>
+<h2 id="3-the-token-wall-when-to-route-up">3. The “Token Wall”: When to Route Up</h2>
+<p>Small models fail when the geometry of the task requires <strong>global consistency</strong>.</p>
+<p>Deep reasoning requires maintaining multiple <strong>latent variables</strong> across time. If a task requires 10 steps of logic, and each step has a 5% chance of drifting off the manifold, an SLM will be miles away from the truth by step 10.</p>
+<p>Route to the big model when:</p>
+<ul>
+<li>The abstraction depth is high (requires &ldquo;multiple hops&rdquo; of logic).</li>
+<li>The task requires synthesis across distant concepts<br>
+(e.g., <em>&ldquo;Write a poem about quantum physics in the style of a 1920s noir novel&rdquo;</em>).</li>
+<li>Global state is critical<br>
+(e.g., <em>&ldquo;Refactor this entire repository to use a different state management pattern&rdquo;</em>).</li>
+</ul>
+<h3 id="the-mental-equation-for-routing">The Mental Equation for Routing</h3>
+<p>Before you hit &ldquo;Enter&rdquo; on a 1.2M context window query, run this heuristic:</p>
+<p>$$
+Difficulty \approx \Delta \text{Information} + \text{Global Dependency Depth}
+$$</p>
+<p>If you are just reshaping information that is already in the prompt, let the small model handle the &ldquo;geometry.&rdquo; Save your &ldquo;intelligence&rdquo; budget for the tasks that require creation.</p>
+
+      </div>
+    </div>
+
+    <div style="margin-top: 1.5rem;">
+      <a class="essay-link" href="/essays/">Back to essays</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+  <footer>
+    <div class="container">
+      <p class="footer-text">© 2026 Deeptanshu Jha.</p>
+    </div>
+  </footer>
+
+  <script src="/js/site.js"></script>
+</body>
+</html>
