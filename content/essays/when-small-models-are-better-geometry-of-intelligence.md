@@ -9,84 +9,201 @@ tags: ["LLMs", "Transformers", "SLMs", "AI"]
 
 
 ### TL;DR
-Most everyday prompts are **local manifold walks**: the meaning stays in the same semantic basin, you’re just changing *shape* (summary, tone, structure). Small models are great at this. Big models are best when the task demands **global consistency** and multi-hop synthesis.
+Most everyday prompts require **local manifold walks**: the meaning stays in the same semantic basin, you’re just changing *shape* (summary, tone, structure). Small models are great at this. Big models are best when the task demands **global consistency** and multi-hop synthesis. Use this wisely.
 
 ---
 
-We have a **"sledgehammer" problem** in AI.
+I routinely use 100B+ parameter models to fix grammar, format markdown, or summarize transcripts—tasks that are like  doing long division with a supercomputer.
 
-We are using massive, 100B+ parameter models to fix typos, format markdown, and summarize transcripts—tasks that are closer to **doing long division with a supercomputer** than “needing intelligence.”
-
-I have previously written about the frustrating experience of running into the **Token Wall** in Claude Code almost every session. To stay under rate limits and be resource-responsible, we need a routing framework based on the **topology of the task**.
+I have previously written about the frustrating experience of running into the Token Wall in Claude Code almost every session. To stay under rate limits—and to be resource-responsible I need a routing framework based on the **topology of the task**, not habit.
 
 ---
 
 ## 1. The Geometry: Reshaping vs. Creating
 
-To understand why small models (SLMs) excel at certain tasks, we have to look at the **latent space**.
+To understand why small models excel at certain tasks, we need to look at **latent space**.
 
-Imagine all possible human thoughts as a topographic map (a manifold). Large models have the "depth" to fly across the entire map, connecting distant continents of logic. Small models, however, are masters of the **local neighborhood**.
+Imagine all possible human thoughts as a vast topographic map (a manifold).
 
-### The “Local Manifold Walk”
+- **Large models** can traverse the entire map, connecting distant continents of meaning.
+- **Small models** are specialists in the local neighborhood.
 
-When you ask a model to *"make this sound like a LinkedIn post,"* you aren't asking for a new discovery. You are asking for a **local manifold walk**.
+They don’t explore.  
+They rearrange.
 
-The original meaning and the rewritten meaning occupy the same semantic basin.
+---
 
-In vector terms:
+## 2. What SLMs Are Actually Good At
+
+Almost all “daily-driver” prompts fall into one of three buckets:
+
+- **Restructuring**
+- **Rewriting**
+- **Extraction**
+
+These are not creative tasks. They are geometric tasks.
+
+---
+
+## 3. Restructuring: The Art of Salience
+
+At the transformer level, your input tokens already live in semantic clusters. Sentences that “belong together” are already neighbors in vector space.
+
+Small models excel at:
+
+- **Reweighting attention**  
+  Identifying which vectors matter most.
+- **Suppressing redundancy**  
+  Dropping low-salience tokens.
+- **Linear ordering**  
+  Re-emitting high-salience tokens in a cleaner sequence.
+
+This is *cheap* in terms of model capacity because no new concepts are required.
+
+The model is acting as a **filter**, not a factory.
+
+---
+
+## 4. Rewriting: Walking the Local Manifold
+
+Paraphrasing is a **local manifold walk**.
+
+Think of meaning as a landscape. When you ask a model to *“make this sound more professional”*, you are not asking it to jump to a new continent of meaning.
+
+You’re asking it to move slightly to the left.
+
+The original sentence and the rewritten one occupy the same semantic basin. In vector terms:
 
 $$
 \vec{v}_{input} \approx \vec{v}_{output}
 $$
 
-The task is simply to find a different set of tokens that project onto the same coordinate. Since the "map" is already built into the SLM’s embeddings, it doesn't need 100 layers to find the exit.
+Because the embeddings are already close, the model doesn’t need to invent anything. It simply projects the existing idea onto a different stylistic surface.
+
+This is why SLMs are so effective at:
+- Tone shifts
+- Grammar fixes
+- Tightening language
+
+They are interpolating, not discovering.
 
 ---
 
-## 2. The SLM Framework: Reshape, Refine, Extract
+## 5. Extraction: Latent Pattern Snapping
 
-If your query fits into one of these three buckets, route it to a local model (like *Llama 3.2 3B* or *Phi-3.5*) and save your Claude tokens for the hard stuff.
+Small models are surprisingly good at extracting **action items**, **decisions**, or **risks** because these are **classification tasks**, not generation tasks.
 
-### A. Reshaping (Information Reorganization)
+The model already knows the *shape* of:
+- an action item
+- a decision
+- an assumption
 
-**Task:** Summaries, outlines, turning a CSV into a JSON.
+It scans the prompt until a span of tokens **snaps** into that latent pattern.
 
-**Why SLMs win:** This is **attention salience**. The model isn't learning new concepts; it’s just re-weighting the importance of tokens already in your prompt. It identifies the high-salience vectors and re-emits them in a cleaner order.
+Think of it like a magnet snapping onto metal filings already scattered on the table.
 
-### B. Refining (Tone and Style)
-
-**Task:** "Tighten this up," "Fix my grammar," "Make this more assertive."
-
-**Why SLMs win:** This is a **projection** task. The model maps the input to a "style" subspace. This is "cheap" because the global semantic structure remains constant.
-
-### C. Extracting (Pattern Snapping)
-
-**Task:** "Give me the action items," "What was the decision made in this meeting?"
-
-**Why SLMs win:** This is **classification + extraction**. The model has learned the "shape" of an action item. It simply scans the text until a span of tokens "snaps" into that latent pattern.
+This requires pattern recognition—but very little global planning.
 
 ---
 
-## 3. The “Token Wall”: When to Route Up
+## 6. Why This Maps to Model Size
+
+The reason this works comes down to **dimensionality** and **depth**.
+
+### Dimensionality: How Big Is the Map?
+
+- **SLM (Small Map)**  
+  Typically has a $d_{model}$ of ~768–2,048.
+
+  In this space, “Apple” (the fruit) and “Apple” (the company) are distinct, but fine-grained distinctions get crowded. Context resolves ambiguity, but there’s limited room for nuance.
+
+- **LLM (Large Map)**  
+  Typically has a $d_{model}$ of 4,096–12,288+.
+
+  With more dimensions, the model can untangle concepts cleanly. It can separate:
+  - physical properties
+  - financial abstractions
+  - cultural symbolism
+  - historical context  
+
+  …without them interfering with each other.
+
+More dimensions = more conceptual elbow room.
+
+---
+
+## 7. Layers: How Far Can You Travel?
+
+In a transformer, **layers are what move you across the map**.
+
+### SLMs: Local Manifold Walking
+
+An SLM has fewer layers (e.g., 12–24).
+
+That means it can only apply a small number of transformations before it has to answer. This makes it excellent at **interpolation**—finding a short path between nearby points:
+
+> “Casual tone” ↔ “Professional tone”
+
+Fast. Cheap. Reliable.
+
+### LLMs: Long-Range Navigation
+
+An LLM has many more layers (e.g., 80–100+).
+
+Each layer is another opportunity to:
+- abstract
+- compress
+- reinterpret
+
+This is what allows an LLM to connect ideas that start far apart and meet only after dozens of transformations.
+
+This is why LLMs can do **zero-shot reasoning** and multi-hop synthesis. They have the *lanes* to cross continents.
+
+---
+
+## 8. The Residual Stream: The Highway System
+
+If layers are the steps across the map, the **residual stream** is the highway system that keeps you oriented.
+
+Think of it as a continuously flowing notebook that every layer can:
+- read from
+- write to
+- refine without erasing
+
+It prevents catastrophic forgetting. Early signals don’t disappear; they accumulate.
+
+For SLMs, this means:
+- The original intent stays intact during local edits.
+
+For LLMs, this means:
+- Long chains of reasoning can remain coherent over dozens of transformations.
+
+Without the residual stream, deep reasoning collapses into noise.
+
+---
+
+## 9. The Token Wall: When to Route Up
 
 Small models fail when the geometry of the task requires **global consistency**.
 
-Deep reasoning requires maintaining multiple **latent variables** across time. If a task requires 10 steps of logic, and each step has a 5% chance of drifting off the manifold, an SLM will be miles away from the truth by step 10.
+Deep reasoning requires maintaining multiple **latent variables** across time. If a task requires 10 steps of logic, and each step has a small chance of drifting off-manifold, an SLM will be nowhere near the truth by the end.
 
-Route to the big model when:
+Route to a big model when:
 
-- The abstraction depth is high (requires "multiple hops" of logic).
-- The task requires synthesis across distant concepts  
-  (e.g., *"Write a poem about quantum physics in the style of a 1920s noir novel"*).
-- Global state is critical  
-  (e.g., *"Refactor this entire repository to use a different state management pattern"*).
+- The abstraction depth is high (multiple hops of logic).
+- The task requires synthesis across distant concepts.  
+- Global state must remain consistent over time (large refactors, long proofs, system design).
 
-### The Mental Equation for Routing
+---
 
-Before you hit "Enter" on a 1.2M context window query, run this heuristic:
+## 10. The Mental Equation for Routing
+
+Before you hit “Enter” on a massive context-window prompt, run this heuristic:
 
 $$
-Difficulty \approx \Delta \text{Information} + \text{Global Dependency Depth}
+\text{Difficulty} \approx \Delta \text{Information} + \text{Global Dependency Depth}
 $$
 
-If you are just reshaping information that is already in the prompt, let the small model handle the "geometry." Save your "intelligence" budget for the tasks that require creation.
+If you are **reshaping information that already exists in the prompt**, let a small model handle the geometry.
+
+Save your intelligence budget for tasks that require **creation**, not rearrangement.
