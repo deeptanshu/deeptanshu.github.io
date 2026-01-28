@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59967&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Claude Code Amazing Debug Where Chatgpt Failed · Deeptanshu Jha</title>
@@ -43,6 +43,14 @@
 
 <main class="main">
   
+<style>
+  .prose img {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+</style>
 <section style="padding-top: 6rem;">
   <div class="container" style="max-width: 850px;">
     <div class="essay-meta" style="margin-bottom: 0.8rem;">
@@ -52,7 +60,38 @@
 
     <div class="essay-card visible" style="padding: 2rem;">
       <div class="prose">
-        <p>Write here.</p>
+        <p>Image Overflow Bug - Final Root Cause Analysis</p>
+<p>The Problem</p>
+<p>Images in blog posts were rendering at their native size (1500-3500px wide) and overflowing beyond the 850px content container.</p>
+<p>The Actual Root Cause</p>
+<p>A Unicode arrow character → in line 311 of site.css was breaking CSS parsing.</p>
+<p>/* This broke the CSS parser */                                                                                                  <br>
+.essay-link::after { content: &lsquo;→&rsquo;; &hellip; }</p>
+<p>/* Fixed version */                                                                                                              <br>
+.essay-link::after { content: &lsquo;\2192&rsquo;; &hellip; }</p>
+<p>The browser received the full CSS file, but the CSS parser choked on the Unicode character and silently stopped parsing everything<br>
+after line 311. All rules after that point (including the .prose img rules at line 471) were ignored.</p>
+<p>Why ChatGPT Couldn&rsquo;t Fix It</p>
+<ol>
+<li>Kept adding rules that were never parsed - It added 5 different .prose img rules, not realizing none of them were being applied<br>
+because parsing stopped earlier in the file</li>
+<li>Focused on CSS specificity instead of delivery - It kept adding !important flags and adjusting selectors, fighting a problem that
+didn&rsquo;t exist</li>
+<li>No interactive debugging - It couldn&rsquo;t ask you to check DevTools to verify rules were actually being applied</li>
+<li>Didn&rsquo;t investigate parsing failures - When CSS rules don&rsquo;t apply, the first question should be &ldquo;is this rule reaching the browser
+and being parsed?&rdquo; not &ldquo;is my specificity wrong?&rdquo;</li>
+</ol>
+<p>The Debugging Process That Found It</p>
+<ol>
+<li>Added inline <!-- raw HTML omitted --> with same selector → worked → proved selector was valid</li>
+<li>Checked Network tab Response → CSS file was delivered correctly</li>
+<li>But rules from end of file weren&rsquo;t in Styles panel → parsing stopped mid-file</li>
+<li>Added test rule at end of file (yellow background) → not applied → confirmed parsing failure</li>
+<li>Found Unicode → character → replaced with \2192 → test rule worked → fixed</li>
+</ol>
+<p>Lesson</p>
+<p>When CSS rules exist in your file but don&rsquo;t appear in DevTools, check for parsing errors earlier in the file. Unicode characters in
+content properties are a common culprit.</p>
 
       </div>
     </div>
