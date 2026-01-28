@@ -8,6 +8,8 @@ enableRobotsTXT = true
   ShowReadingTime = true
   ShowShareButtons = true
   ShowCodeCopyButtons = true
+  math = true
+
 
 [menu]
   [[menu.main]]
@@ -19,3 +21,12 @@ enableRobotsTXT = true
     name = "Projects"
     url = "/projects/"
     weight = 20
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [['$$','$$'], ['\[','\]']]
+          inline = [['$','$'], ['\(','\)']]

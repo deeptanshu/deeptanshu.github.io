@@ -31,7 +31,6 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
   transition: background-color 0.3s var(--ease-smooth), color 0.3s var(--ease-smooth);
 }
 
@@ -309,7 +308,7 @@ section { padding: 3rem 0; position: relative; }
   transition: gap 0.3s var(--ease-smooth);
 }
 .essay-link:hover { gap: 1rem; }
-.essay-link::after { content: '→'; color: var(--color-accent); font-size: 1.1rem; }
+.essay-link::after { content: '\2192'; color: var(--color-accent); font-size: 1.1rem; }
 
 /* Projects */
 .projects-list { display: flex; flex-direction: column; gap: 1.5rem; }
@@ -458,3 +457,32 @@ footer {
 .project-tags {
   margin-top: 0.6rem;
 }
+
+/* Container overflow protection - prevents content from escaping */
+.container,
+.essay-card,
+.prose {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+/* Post images: constrained to container, centered */
+.post-content img,
+.prose img,
+figure img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+}
+
+/* Mobile: same rules apply */
+@media (max-width: 768px) {
+  .post-content img,
+  .prose img,
+  figure img {
+    max-width: 100%;
+  }
+}
+

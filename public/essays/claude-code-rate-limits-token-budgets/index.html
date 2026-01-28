@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=59967&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Claude Code Rate Limits: Diagnosing my token usage  · Deeptanshu Jha</title>
+  <title>Claude Code Rate Limits: Diagnosing my token usage · Deeptanshu Jha</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,77 +48,45 @@
     <div class="essay-meta" style="margin-bottom: 0.8rem;">
       Claude Code · Jan 26, 2026
     </div>
-    <h1 class="section-title" style="margin-bottom: 1rem;">Claude Code Rate Limits: Diagnosing my token usage </h1>
+    <h1 class="section-title" style="margin-bottom: 1rem;">Claude Code Rate Limits: Diagnosing my token usage</h1>
 
     <div class="essay-card visible" style="padding: 2rem;">
       <div class="prose">
-        <p>Every few hours using Claude Code, I hit a wall. It is incredibly frustrating to be mid-flow and get locked out by a rate limit. After burning through roughly <strong>44 million tokens</strong> and a <strong>$67.58 bill</strong>, I dug into the logs to find out why.</p>
-<p>The data shows I wasn&rsquo;t paying for intelligence. I was paying a &ldquo;memory tax&rdquo; for conversations that never ended.</p>
-<hr>
+        <p>Every few hours using Claude Code, I hit a wall. Mid-flow, locked out by a rate limit. After burning through roughly <strong>44 million tokens</strong> and a <strong>$67.58 bill</strong>, I finally dug into the logs.</p>
+<p>Turns out I wasn&rsquo;t paying for intelligence. I was paying a &ldquo;memory tax&rdquo; for conversations that never ended.</p>
 <h2 id="the-68-breakdown">The $68 breakdown</h2>
-<p>In about 17 days, I made nearly 500 requests. Here is where the money actually went:</p>
-<table>
-  <thead>
-      <tr>
-          <th>Category</th>
-          <th>Cost</th>
-          <th>% of Total</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>Building context (Cache Write)</td>
-          <td>$39.95</td>
-          <td>67.1%</td>
-      </tr>
-      <tr>
-          <td>Re-reading history (Cache Read)</td>
-          <td>$17.30</td>
-          <td>29.1%</td>
-      </tr>
-      <tr>
-          <td><strong>Actual AI answers (Output)</strong></td>
-          <td><strong>$2.14</strong></td>
-          <td><strong>3.2%</strong></td>
-      </tr>
-      <tr>
-          <td>New prompts</td>
-          <td>$0.15</td>
-          <td>0.3%</td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Only 3% of my bill went toward actual answers.</strong><br>
-The rest was spent reminding the AI what we had already discussed.</p>
-<hr>
+<p>In one gigantic session over several days, I made nearly 500 requests. Here&rsquo;s where the money actually went:</p>
+<h3 id="the-68-breakdown-1">The $68 breakdown</h3>
+<ul>
+<li><strong>Building context (Cache Write):</strong> $39.95 (67.1%)</li>
+<li><strong>Re-reading history (Cache Read):</strong> $17.30 (29.1%)</li>
+<li><strong>Actual AI answers (Output):</strong> <strong>$2.14 (3.2%)</strong></li>
+<li><strong>New prompts:</strong> $0.15 (0.3%)</li>
+</ul>
+<p><strong>Only ~3% of my bill went toward actual answers.</strong></p>
+<p>The rest? Reminding the AI what we had already discussed.</p>
 <h2 id="the-077-yes">The $0.77 &ldquo;yes&rdquo;</h2>
 <p>The most expensive word I typed was &ldquo;yes.&rdquo;</p>
-<p>In one marathon session, I hit 361 requests without ever clearing the history. By the end, the context had ballooned to over <strong>153,000 tokens</strong>. Because Claude Code re-processes the entire conversation history with every new message, a simple confirmation cost $0.77. At the start of that same session, it would have cost less than a dime.</p>
-<hr>
+<p>One marathon session hit 361 requests without ever clearing the history. By the end, the context had ballooned to over <strong>153,000 tokens</strong>. Because Claude Code re-processes the entire conversation history with every new message, a simple confirmation cost me $0.77. At the start of that same session, it would have cost less than a dime.</p>
+<p>I keep coming back to this. Seventy-seven cents to say yes.</p>
+<p><img alt="Snowball Chart Claude Session" loading="lazy" src="/images/posts/claude-code-rate-limits/context-snowball-chart.png"></p>
 <h2 id="the-5-hour-rolling-window">The 5-hour rolling window</h2>
 <p>I used to think limits reset daily. They don&rsquo;t.</p>
-<p>Claude subscriptions operate on a <strong>5-hour rolling window</strong> starting from your first use. If you exhaust your budget in a heavy two-hour burst of context-heavy work, you are stuck until that window slides forward.</p>
-<hr>
+<p>Claude subscriptions operate on a <strong>5-hour rolling window</strong> starting from your first use. Exhaust your budget in a heavy two-hour burst of context-heavy work? You&rsquo;re stuck until that window slides forward.</p>
+<p>This explains why I&rsquo;d be flying through tasks at 2pm, then completely locked out by 4pm despite having &ldquo;plenty of daily budget left.&rdquo; There is no daily budget. Just a rolling window that doesn&rsquo;t care about your flow state.</p>
 <h2 id="why-the-bill-was-so-high">Why the bill was so high</h2>
-<p>My analysis identified three habits that caused the bloat:</p>
-<ul>
-<li><strong>Marathon sessions:</strong> I kept sessions active for days. Every tool call, shell output, and file read became permanent debt that I paid for in every subsequent message.</li>
-<li><strong>Task mixing:</strong> I used one session for everything—coding, stock analysis, and job searching. Claude doesn&rsquo;t need to know my tax-loss harvesting strategy to fix a UI bug, but I paid for it to remember both.</li>
-<li><strong>The model mismatch:</strong> I used <strong>Opus 4.5</strong> for every single command. Analysis showed that <strong>66% of my queries</strong>—simple things like <code>ls</code>, <code>cd</code>, or moving files—could have been handled by Haiku for 80% less money.</li>
-</ul>
-<hr>
+<p>Three habits caused the bloat:</p>
+<p><strong>Marathon sessions:</strong> I kept sessions active for days. Every tool call, shell output, and file read became permanent debt that I paid for in every subsequent message.</p>
+<p><strong>Task mixing:</strong> One session for everything—coding, stock analysis, job searching. Claude doesn&rsquo;t need to know my tax-loss harvesting strategy to fix a UI bug, but I paid for it to remember both.</p>
+<p><strong>Model mismatch:</strong> I used <strong>Opus 4.5</strong> for every single command. Turns out <strong>66% of my queries</strong>—simple things like <code>ls</code>, <code>cd</code>, or moving files—could have been handled by Haiku for 80% less.</p>
 <h2 id="my-new-workflow">My new workflow</h2>
-<p>I&rsquo;m changing how I work to stop the waste:</p>
-<ol>
-<li><strong>Clear context often:</strong> I now use <code>/clear</code> or start fresh sessions every 50 requests.</li>
-<li><strong>Match the model to the task:</strong> I use Haiku for navigation and confirmations, saving Opus only for architecture and deep logic.</li>
-<li><strong>Local routing:</strong> I am building a tool to route basic shell commands to a local model (<code>llama3.2:1b</code>). This handles the boring stuff for $0.00.</li>
-</ol>
+<p>I&rsquo;m changing three things:</p>
+<p><strong>Clear context often.</strong> I now use <code>/clear</code> or start fresh sessions every 50 requests. Feels wasteful at first, like throwing away perfectly good context. But that context isn&rsquo;t free—it&rsquo;s debt.</p>
+<p><strong>Match the model to the task.</strong> Haiku for navigation and confirmations. Opus only for architecture and deep logic.</p>
+<p><strong>Local routing.</strong> I&rsquo;m building a tool to route basic shell commands to a local model (<code>llama3.2:1b</code>). Handles the boring stuff for $0.00.</p>
 <p>AI is only expensive if you force it to have a perfect, infinite memory for things that don&rsquo;t matter.</p>
 <hr>
-<p>Would you like me to help you set up a simple shell alias that uses a cheaper model for basic file navigation?</p>
-<hr>
-<p><em>If this saved you from the meta-analysis death spiral, share it.</em></p>
+<p><em>If this saved you from burning money on context debt, pass it on.</em></p>
 
       </div>
     </div>
