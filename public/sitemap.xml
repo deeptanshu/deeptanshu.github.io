@@ -2,72 +2,87 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://deeptanshu.github.io/tags/ai/</loc>
+    <loc>http://localhost:1313/essays/carryover-portable-state-handoff-for-llms/</loc>
+    <lastmod>2026-01-28T10:00:57-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/essays/</loc>
+    <lastmod>2026-01-28T10:00:57-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-01-28T10:00:57-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/essays/claude-code-amazing-debug-where-chatgpt-failed/</loc>
+    <lastmod>2026-01-28T00:46:05-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/ai/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/projects/carryover/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/cli/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/llms/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/projects/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/python/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-01-28T00:00:00-08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/slms/</loc>
     <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/essays/</loc>
+    <loc>http://localhost:1313/tags/transformers/</loc>
     <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/</loc>
+    <loc>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</loc>
     <lastmod>2026-01-26T21:45:48-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/llms/</loc>
-    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/tags/slms/</loc>
-    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/tags/</loc>
-    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/tags/transformers/</loc>
-    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/essays/when-small-models-are-better-geometry-of-intelligence/</loc>
-    <lastmod>2026-01-26T21:45:48-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/essays/claude-code-rate-limits-token-budgets/</loc>
+    <loc>http://localhost:1313/essays/claude-code-rate-limits-token-budgets/</loc>
     <lastmod>2026-01-26T21:04:07-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/autoregressive/</loc>
+    <loc>http://localhost:1313/tags/autoregressive/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/psychology/</loc>
+    <loc>http://localhost:1313/tags/psychology/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/essays/strange-habits-of-llms/</loc>
+    <loc>http://localhost:1313/essays/strange-habits-of-llms/</loc>
     <lastmod>2026-01-25T22:48:41-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/essays/realwordevals/</loc>
+    <loc>http://localhost:1313/essays/realwordevals/</loc>
     <lastmod>2026-01-25T13:45:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/essays/real-world-rag-partone/</loc>
+    <loc>http://localhost:1313/essays/real-world-rag-partone/</loc>
     <lastmod>2026-01-25T13:45:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/nlp/</loc>
+    <loc>http://localhost:1313/tags/nlp/</loc>
     <lastmod>2026-01-25T00:00:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/pagerank/</loc>
+    <loc>http://localhost:1313/tags/pagerank/</loc>
     <lastmod>2026-01-25T00:00:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/projects/</loc>
+    <loc>http://localhost:1313/projects/summarizer/</loc>
     <lastmod>2026-01-25T00:00:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/projects/summarizer/</loc>
+    <loc>http://localhost:1313/tags/text-summarization/</loc>
     <lastmod>2026-01-25T00:00:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/text-summarization/</loc>
-    <lastmod>2026-01-25T00:00:00-08:00</lastmod>
-  </url><url>
-    <loc>https://deeptanshu.github.io/tags/building/</loc>
+    <loc>http://localhost:1313/tags/building/</loc>
     <lastmod>2026-01-24T22:10:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/tags/product/</loc>
+    <loc>http://localhost:1313/tags/product/</loc>
     <lastmod>2026-01-24T22:10:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/essays/resuscitating-this-site/</loc>
+    <loc>http://localhost:1313/essays/resuscitating-this-site/</loc>
     <lastmod>2026-01-24T22:10:00-08:00</lastmod>
   </url><url>
-    <loc>https://deeptanshu.github.io/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url>
 </urlset>

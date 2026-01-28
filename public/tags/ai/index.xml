@@ -2,17 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>AI on Deeptanshu Jha</title>
-    <link>https://deeptanshu.github.io/tags/ai/</link>
+    <link>http://localhost:1313/tags/ai/</link>
     <description>Recent content in AI on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 26 Jan 2026 21:45:48 -0800</lastBuildDate>
-    <atom:link href="https://deeptanshu.github.io/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Jan 2026 00:00:00 -0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Carryover (2025)</title>
+      <link>http://localhost:1313/projects/carryover/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>http://localhost:1313/projects/carryover/</guid>
+      <description>&lt;p&gt;A command-line tool to extract Claude Code session data and generate portable handoff documents for use with ChatGPT and other LLMs. It parses session logs, generates structured markdown using local Ollama models, and includes automatic secret redaction for API keys and credentials. Source &lt;a href=&#34;https://github.com/deeptanshu/carryover&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>When Small Models Are Good Enough: A Peek into Geometry of Intelligence</title>
-      <link>https://deeptanshu.github.io/essays/when-small-models-are-better-geometry-of-intelligence/</link>
+      <link>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</link>
       <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
-      <guid>https://deeptanshu.github.io/essays/when-small-models-are-better-geometry-of-intelligence/</guid>
+      <guid>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</guid>
       <description>&lt;h3 id=&#34;tldr&#34;&gt;TL;DR&lt;/h3&gt;
 &lt;p&gt;&lt;em&gt;Most everyday prompts are reshaping meaning that&amp;rsquo;s already there, not creating new concepts (local manifold walks - explained below). Small models handle this fairly competently, and will help you save on costs and resources. Big models matter when you need global consistency across multiple reasoning hops.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;I routinely burn Claude Opus tokens to fix typos. I&amp;rsquo;ve used Sonnet to reformat markdown. Last week I spent $12 having GPT-4 summarize a transcript I could have skimmed in three minutes.&lt;/p&gt;</description>

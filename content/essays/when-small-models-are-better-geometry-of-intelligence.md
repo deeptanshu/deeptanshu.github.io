@@ -19,7 +19,7 @@ I routinely burn Claude Opus tokens to fix typos. I've used Sonnet to reformat m
 
 It's like doing long division with a supercomputer.
 
-I've written before about hitting Claude Code's token wall almost every session. To stay under rate limits-and stop lighting money on fire-I need a routing framework based on what the task actually requires, not what I habitually reach for.
+I've [written before]({{< relref "essays/claude-code-rate-limits-token-budgets.md">}}) about hitting Claude Code's token wall almost every session. To stay under rate limits-and stop lighting money on fire-I need a routing framework based on what the task actually requires, not what I habitually reach for.
 
 
 ## The Geometry: Reshaping vs. Creating

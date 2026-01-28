@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Claude Code Rate Limits: Diagnosing my token usage · Deeptanshu Jha</title>
@@ -60,7 +60,7 @@
 
     <div class="essay-card visible" style="padding: 2rem;">
       <div class="prose">
-        <p>Every few hours using Claude Code, I hit a wall. Mid-flow, locked out by a rate limit. After burning through roughly <strong>44 million tokens</strong> and a <strong>$67.58 bill</strong>, I finally dug into the logs.</p>
+        <p>Every few hours using Claude Code, I hit a wall. Mid-flow, locked out by a rate limit. After burning through roughly 44 million tokens and a $67.58 bill, I finally had Claude dig into logs and diagnose my usage.</p>
 <p>Turns out I wasn&rsquo;t paying for intelligence. I was paying a &ldquo;memory tax&rdquo; for conversations that never ended.</p>
 <h2 id="the-68-breakdown">The $68 breakdown</h2>
 <p>In one gigantic session over several days, I made nearly 500 requests. Here&rsquo;s where the money actually went:</p>
@@ -75,18 +75,18 @@
 <p>The rest? Reminding the AI what we had already discussed.</p>
 <h2 id="the-077-yes">The $0.77 &ldquo;yes&rdquo;</h2>
 <p>The most expensive word I typed was &ldquo;yes.&rdquo;</p>
-<p>One marathon session hit 361 requests without ever clearing the history. By the end, the context had ballooned to over <strong>153,000 tokens</strong>. Because Claude Code re-processes the entire conversation history with every new message, a simple confirmation cost me $0.77. At the start of that same session, it would have cost less than a dime.</p>
+<p>One marathon session hit 361 requests without ever clearing the history. By the end, the context had ballooned to over 153,000 tokens. Because Claude Code re-processes the entire conversation history with every new message, a simple confirmation cost me $0.77. At the start of that same session, it would have cost less than a dime.</p>
 <p>I keep coming back to this. Seventy-seven cents to say yes.</p>
-<p><img alt="Snowball Chart Claude Session" loading="lazy" src="/images/posts/claude-code-rate-limits/context-snowball-chart.png"></p>
+<p><img alt="Snowball Chart Claude" loading="lazy" src="/images/posts/claude-code-rate-limits/context-snowball-chart.png"></p>
 <h2 id="the-5-hour-rolling-window">The 5-hour rolling window</h2>
 <p>I used to think limits reset daily. They don&rsquo;t.</p>
-<p>Claude subscriptions operate on a <strong>5-hour rolling window</strong> starting from your first use. Exhaust your budget in a heavy two-hour burst of context-heavy work? You&rsquo;re stuck until that window slides forward.</p>
+<p>Claude subscriptions operate on a 5-hour rolling window starting from your first use. Exhaust your budget in a heavy two-hour burst of context-heavy work? You&rsquo;re stuck until that window slides forward.</p>
 <p>This explains why I&rsquo;d be flying through tasks at 2pm, then completely locked out by 4pm despite having &ldquo;plenty of daily budget left.&rdquo; There is no daily budget. Just a rolling window that doesn&rsquo;t care about your flow state.</p>
 <h2 id="why-the-bill-was-so-high">Why the bill was so high</h2>
 <p>Three habits caused the bloat:</p>
 <p><strong>Marathon sessions:</strong> I kept sessions active for days. Every tool call, shell output, and file read became permanent debt that I paid for in every subsequent message.</p>
-<p><strong>Task mixing:</strong> One session for everything—coding, stock analysis, job searching. Claude doesn&rsquo;t need to know my tax-loss harvesting strategy to fix a UI bug, but I paid for it to remember both.</p>
-<p><strong>Model mismatch:</strong> I used <strong>Opus 4.5</strong> for every single command. Turns out <strong>66% of my queries</strong>—simple things like <code>ls</code>, <code>cd</code>, or moving files—could have been handled by Haiku for 80% less.</p>
+<p><strong>Task mixing:</strong> One session for everything—coding, stock analysis, analyzing my calendar, replying to emails, coding up a breastfeeding tracker, etc. Claude doesn&rsquo;t need to know my tax-loss harvesting strategy to fix a separate UI bug, but I paid for it to remember both.</p>
+<p><strong>Model mismatch:</strong> I used Opus 4.5 for every single command. Turns out 66% of my queries—simple things like <code>ls</code>, <code>cd</code>, or moving files—could have been handled by Haiku for 80% less.</p>
 <h2 id="my-new-workflow">My new workflow</h2>
 <p>I&rsquo;m changing three things:</p>
 <p><strong>Clear context often.</strong> I now use <code>/clear</code> or start fresh sessions every 50 requests. Feels wasteful at first, like throwing away perfectly good context. But that context isn&rsquo;t free—it&rsquo;s debt.</p>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>PageRank on Deeptanshu Jha</title>
-    <link>https://deeptanshu.github.io/tags/pagerank/</link>
+    <link>http://localhost:1313/tags/pagerank/</link>
     <description>Recent content in PageRank on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 25 Jan 2026 00:00:00 -0800</lastBuildDate>
-    <atom:link href="https://deeptanshu.github.io/tags/pagerank/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/pagerank/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Summarizer (2014)</title>
-      <link>https://deeptanshu.github.io/projects/summarizer/</link>
+      <link>http://localhost:1313/projects/summarizer/</link>
       <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>https://deeptanshu.github.io/projects/summarizer/</guid>
+      <guid>http://localhost:1313/projects/summarizer/</guid>
       <description>&lt;p&gt;Extractive text summarization in Python using classic NLP + graph ranking. It ended up powering multiple Reddit bots. Source &lt;a href=&#34;https://github.com/lekhakpadmanabh/Summarizer/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>

@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Projects on Deeptanshu Jha</title>
-    <link>http://localhost:1313/projects/</link>
-    <description>Recent content in Projects on Deeptanshu Jha</description>
+    <title>Python on Deeptanshu Jha</title>
+    <link>http://localhost:1313/tags/python/</link>
+    <description>Recent content in Python on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 28 Jan 2026 00:00:00 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/projects/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Carryover (2025)</title>
       <link>http://localhost:1313/projects/carryover/</link>
       <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
       <guid>http://localhost:1313/projects/carryover/</guid>
       <description>&lt;p&gt;A command-line tool to extract Claude Code session data and generate portable handoff documents for use with ChatGPT and other LLMs. It parses session logs, generates structured markdown using local Ollama models, and includes automatic secret redaction for API keys and credentials. Source &lt;a href=&#34;https://github.com/deeptanshu/carryover&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Summarizer (2014)</title>
-      <link>http://localhost:1313/projects/summarizer/</link>
-      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/projects/summarizer/</guid>
-      <description>&lt;p&gt;Extractive text summarization in Python using classic NLP + graph ranking. It ended up powering multiple Reddit bots. Source &lt;a href=&#34;https://github.com/lekhakpadmanabh/Summarizer/&#34;&gt;here&lt;/a&gt;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
