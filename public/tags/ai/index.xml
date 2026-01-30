@@ -2,24 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>AI on Deeptanshu Jha</title>
-    <link>http://localhost:1313/tags/ai/</link>
+    <link>https://deeptanshu.github.io/tags/ai/</link>
     <description>Recent content in AI on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 28 Jan 2026 00:00:00 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Jan 2026 10:00:57 -0800</lastBuildDate>
+    <atom:link href="https://deeptanshu.github.io/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Carryover: Portable state handoff for LLMs</title>
+      <link>https://deeptanshu.github.io/essays/carryover-portable-state-handoff-for-llms/</link>
+      <pubDate>Wed, 28 Jan 2026 10:00:57 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/essays/carryover-portable-state-handoff-for-llms/</guid>
+      <description>&lt;h1 id=&#34;carryover-when-you-hit-the-rate-limit-wall&#34;&gt;Carryover: When you hit the rate limit wall&lt;/h1&gt;
+&lt;p&gt;There&amp;rsquo;s a particular kind of frustration that comes from being deep in flow, making real progress, and then seeing: &amp;ldquo;You&amp;rsquo;ve hit your rate limit. Try again in 4 hours and 37 minutes.&amp;rdquo; It&amp;rsquo;s like I’m in deep work with papers everywhere and all my windows arranged just right, and then someone taps me on the shoulder and tells me to clear my desk, pack everything up, and move to a different workstation&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Carryover (2025)</title>
-      <link>http://localhost:1313/projects/carryover/</link>
+      <link>https://deeptanshu.github.io/projects/carryover/</link>
       <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/projects/carryover/</guid>
+      <guid>https://deeptanshu.github.io/projects/carryover/</guid>
       <description>&lt;p&gt;A command-line tool to extract Claude Code session data and generate portable handoff documents for use with ChatGPT and other LLMs. It parses session logs, generates structured markdown using local Ollama models, and includes automatic secret redaction for API keys and credentials. Source &lt;a href=&#34;https://github.com/deeptanshu/carryover&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;</description>
     </item>
     <item>
       <title>When Small Models Are Good Enough: A Peek into Geometry of Intelligence</title>
-      <link>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</link>
+      <link>https://deeptanshu.github.io/essays/when-small-models-are-better-geometry-of-intelligence/</link>
       <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
-      <guid>http://localhost:1313/essays/when-small-models-are-better-geometry-of-intelligence/</guid>
+      <guid>https://deeptanshu.github.io/essays/when-small-models-are-better-geometry-of-intelligence/</guid>
       <description>&lt;h3 id=&#34;tldr&#34;&gt;TL;DR&lt;/h3&gt;
 &lt;p&gt;&lt;em&gt;Most everyday prompts are reshaping meaning that&amp;rsquo;s already there, not creating new concepts (local manifold walks - explained below). Small models handle this fairly competently, and will help you save on costs and resources. Big models matter when you need global consistency across multiple reasoning hops.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;I routinely burn Claude Opus tokens to fix typos. I&amp;rsquo;ve used Sonnet to reformat markdown. Last week I spent $12 having GPT-4 summarize a transcript I could have skimmed in three minutes.&lt;/p&gt;</description>

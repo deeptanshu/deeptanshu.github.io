@@ -3,17 +3,15 @@ title: "Carryover: Portable state handoff for LLMs"
 date: 2026-01-28T10:00:57-08:00
 draft: false
 category: ""
-excerpt: ""
+excerpt: "I built a a portable work state CLI tool to easily switch between LLMs"
 tags: ["LLMs", "AI", "Building"]
 ---
 
 # Carryover: When you hit the rate limit wall
 
-There's a particular kind of frustration that comes from being deep in flow, making real progress, and then seeing: "You've reached your usage limit. Try again in 4 hours and 37 minutes."
+There's a particular kind of frustration that comes from being deep in flow, making real progress, and then seeing: "You've hit your rate limit. Try again in 4 hours and 37 minutes." It's like I’m in deep work with papers everywhere and all my windows arranged just right, and then someone taps me on the shoulder and tells me to clear my desk, pack everything up, and move to a different workstation
 
-This kept happening to me with Claude Code. I'd be mid-refactor on some gnarly module, context loaded with file diffs, agent decisions, skill configurations, and suddenly I'd need to switch to ChatGPT or Gemini to keep going.
-
-The manual process was miserable. Copy conversation logs. Paste into new chat. Type out what was happening. Wait for the new model to catch up. Try to get productive again while your brain screams that you were *just there* five minutes ago.
+This kept happening to me with Claude Code and I'd need to switch to ChatGPT or Gemini to keep going. The manual process was miserable. Copy conversation logs. Paste into new chat. Type out what was happening. Wait for the new model to catch up. Try to get productive again while your brain screams that you were *just there* five minutes ago.
 
 So I built Carryover.
 

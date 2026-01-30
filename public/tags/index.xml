@@ -2,101 +2,101 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on Deeptanshu Jha</title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://deeptanshu.github.io/tags/</link>
     <description>Recent content in Tags on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 28 Jan 2026 00:00:00 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Jan 2026 10:00:57 -0800</lastBuildDate>
+    <atom:link href="https://deeptanshu.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>AI</title>
-      <link>http://localhost:1313/tags/ai/</link>
-      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/ai/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>CLI</title>
-      <link>http://localhost:1313/tags/cli/</link>
-      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/cli/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>LLMs</title>
-      <link>http://localhost:1313/tags/llms/</link>
-      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/llms/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>http://localhost:1313/tags/python/</link>
-      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/python/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>SLMs</title>
-      <link>http://localhost:1313/tags/slms/</link>
-      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
-      <guid>http://localhost:1313/tags/slms/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Transformers</title>
-      <link>http://localhost:1313/tags/transformers/</link>
-      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
-      <guid>http://localhost:1313/tags/transformers/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Autoregressive</title>
-      <link>http://localhost:1313/tags/autoregressive/</link>
-      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
-      <guid>http://localhost:1313/tags/autoregressive/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Psychology</title>
-      <link>http://localhost:1313/tags/psychology/</link>
-      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
-      <guid>http://localhost:1313/tags/psychology/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>NLP</title>
-      <link>http://localhost:1313/tags/nlp/</link>
-      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/nlp/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>PageRank</title>
-      <link>http://localhost:1313/tags/pagerank/</link>
-      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/pagerank/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Text Summarization</title>
-      <link>http://localhost:1313/tags/text-summarization/</link>
-      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/text-summarization/</guid>
+      <link>https://deeptanshu.github.io/tags/ai/</link>
+      <pubDate>Wed, 28 Jan 2026 10:00:57 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>Building</title>
-      <link>http://localhost:1313/tags/building/</link>
-      <pubDate>Sat, 24 Jan 2026 22:10:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/building/</guid>
+      <link>https://deeptanshu.github.io/tags/building/</link>
+      <pubDate>Wed, 28 Jan 2026 10:00:57 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/building/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LLMs</title>
+      <link>https://deeptanshu.github.io/tags/llms/</link>
+      <pubDate>Wed, 28 Jan 2026 10:00:57 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/llms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>CLI</title>
+      <link>https://deeptanshu.github.io/tags/cli/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/cli/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://deeptanshu.github.io/tags/python/</link>
+      <pubDate>Wed, 28 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>SLMs</title>
+      <link>https://deeptanshu.github.io/tags/slms/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/slms/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Transformers</title>
+      <link>https://deeptanshu.github.io/tags/transformers/</link>
+      <pubDate>Mon, 26 Jan 2026 21:45:48 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/transformers/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Autoregressive</title>
+      <link>https://deeptanshu.github.io/tags/autoregressive/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/autoregressive/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Psychology</title>
+      <link>https://deeptanshu.github.io/tags/psychology/</link>
+      <pubDate>Sun, 25 Jan 2026 22:48:41 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/psychology/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>NLP</title>
+      <link>https://deeptanshu.github.io/tags/nlp/</link>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/nlp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>PageRank</title>
+      <link>https://deeptanshu.github.io/tags/pagerank/</link>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/pagerank/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Text Summarization</title>
+      <link>https://deeptanshu.github.io/tags/text-summarization/</link>
+      <pubDate>Sun, 25 Jan 2026 00:00:00 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/tags/text-summarization/</guid>
       <description></description>
     </item>
     <item>
       <title>Product</title>
-      <link>http://localhost:1313/tags/product/</link>
+      <link>https://deeptanshu.github.io/tags/product/</link>
       <pubDate>Sat, 24 Jan 2026 22:10:00 -0800</pubDate>
-      <guid>http://localhost:1313/tags/product/</guid>
+      <guid>https://deeptanshu.github.io/tags/product/</guid>
       <description></description>
     </item>
   </channel>

@@ -2,17 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Building on Deeptanshu Jha</title>
-    <link>http://localhost:1313/tags/building/</link>
+    <link>https://deeptanshu.github.io/tags/building/</link>
     <description>Recent content in Building on Deeptanshu Jha</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 24 Jan 2026 22:10:00 -0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/building/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 28 Jan 2026 10:00:57 -0800</lastBuildDate>
+    <atom:link href="https://deeptanshu.github.io/tags/building/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Carryover: Portable state handoff for LLMs</title>
+      <link>https://deeptanshu.github.io/essays/carryover-portable-state-handoff-for-llms/</link>
+      <pubDate>Wed, 28 Jan 2026 10:00:57 -0800</pubDate>
+      <guid>https://deeptanshu.github.io/essays/carryover-portable-state-handoff-for-llms/</guid>
+      <description>&lt;h1 id=&#34;carryover-when-you-hit-the-rate-limit-wall&#34;&gt;Carryover: When you hit the rate limit wall&lt;/h1&gt;
+&lt;p&gt;There&amp;rsquo;s a particular kind of frustration that comes from being deep in flow, making real progress, and then seeing: &amp;ldquo;You&amp;rsquo;ve hit your rate limit. Try again in 4 hours and 37 minutes.&amp;rdquo; It&amp;rsquo;s like I’m in deep work with papers everywhere and all my windows arranged just right, and then someone taps me on the shoulder and tells me to clear my desk, pack everything up, and move to a different workstation&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Rebuilding (resuscitating) this site</title>
-      <link>http://localhost:1313/essays/resuscitating-this-site/</link>
+      <link>https://deeptanshu.github.io/essays/resuscitating-this-site/</link>
       <pubDate>Sat, 24 Jan 2026 22:10:00 -0800</pubDate>
-      <guid>http://localhost:1313/essays/resuscitating-this-site/</guid>
+      <guid>https://deeptanshu.github.io/essays/resuscitating-this-site/</guid>
       <description>&lt;p&gt;I logged into GitHub after 14 years and found this site sitting there like an abandoned project. Another GitHub account exists somewhere, tied to an email I&amp;rsquo;ll never check again (github.com/lekhakpadmanabh). So I picked this one, shipped something simple, and got it live.&lt;/p&gt;
 &lt;p&gt;What started as &amp;ldquo;just website setup&amp;rdquo; turned into a surprisingly good session with ChatGPT and Claude Code. Same product instincts, different canvas.&lt;/p&gt;
 &lt;h2 id=&#34;make-the-smallest-atomic-desire-true&#34;&gt;Make the smallest atomic desire true&lt;/h2&gt;

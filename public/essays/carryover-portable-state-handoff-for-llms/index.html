@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Carryover Portable State Handoff for Llms · Deeptanshu Jha</title>
+  <title>Carryover: Portable state handoff for LLMs · Deeptanshu Jha</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,11 +56,43 @@
     <div class="essay-meta" style="margin-bottom: 0.8rem;">
       Jan 28, 2026
     </div>
-    <h1 class="section-title" style="margin-bottom: 1rem;">Carryover Portable State Handoff for Llms</h1>
+    <h1 class="section-title" style="margin-bottom: 1rem;">Carryover: Portable state handoff for LLMs</h1>
 
     <div class="essay-card visible" style="padding: 2rem;">
       <div class="prose">
-        <p>Write here.</p>
+        <h1 id="carryover-when-you-hit-the-rate-limit-wall">Carryover: When you hit the rate limit wall</h1>
+<p>There&rsquo;s a particular kind of frustration that comes from being deep in flow, making real progress, and then seeing: &ldquo;You&rsquo;ve hit your rate limit. Try again in 4 hours and 37 minutes.&rdquo; It&rsquo;s like I’m in deep work with papers everywhere and all my windows arranged just right, and then someone taps me on the shoulder and tells me to clear my desk, pack everything up, and move to a different workstation</p>
+<p>This kept happening to me with Claude Code and I&rsquo;d need to switch to ChatGPT or Gemini to keep going. The manual process was miserable. Copy conversation logs. Paste into new chat. Type out what was happening. Wait for the new model to catch up. Try to get productive again while your brain screams that you were <em>just there</em> five minutes ago.</p>
+<p>So I built Carryover.</p>
+<h2 id="context-is-more-than-chat-history">Context is more than chat history</h2>
+<p>From <a href="/essays/claude-code-rate-limits-token-budgets/">my deep dive into Claude Code token usage</a>: I was burning through 41+ million tokens, mostly on context re-reading. Every time I hit a rate limit and tried to manually transfer work to another LLM, I was recreating my entire work state in a new environment.</p>
+<p>But work state isn&rsquo;t just the conversation transcript. It&rsquo;s file diffs showing what code changed. It&rsquo;s skills I&rsquo;d configured. It&rsquo;s the reasoning chain of what approaches worked and didn&rsquo;t. It&rsquo;s why we made certain choices, weighted by recency.</p>
+<p>Without all that, you&rsquo;re starting from scratch.</p>
+<h2 id="local-models-can-compress">Local models can compress</h2>
+<p>I&rsquo;ve been curious about <a href="/essays/when-small-models-are-better-geometry-of-intelligence/">what smaller models do well</a>. Turns out 7B parameter models running on Ollama are good at compression, selectively attending to fewer tokens without adding new information. They run fine even on my wife&rsquo;s 8GB M1 MacBook Air.</p>
+<p>I didn&rsquo;t need a massive model to create a handoff document. I needed something that could understand the structure of my work session and preserve what mattered.</p>
+<p>After three rate-limited sessions with Claude Code and several more with ChatGPT, dusting off my GitHub account that hadn&rsquo;t been touched in 12+ years (my last commit was a <a href="https://github.com/lekhakpadmanabh/Summarizer">text summarizer</a>), Carryover is live.</p>
+<h2 id="how-it-works">How it works</h2>
+<p>There are attempts to standardize universal context protocols. This isn&rsquo;t one of them. This is me solving a specific problem and sharing it because others might find it useful.</p>
+<p>Here&rsquo;s what&rsquo;s interesting: you can clone more than just the repository. Clone my <code>SPECS.md</code>, tweak it, have an AI build your version. Your implementation would be different, but you&rsquo;d benefit from the thinking in the structure.</p>
+<h2 id="what-i-learned">What I learned</h2>
+<p><strong>Context is work state.</strong> Not obvious until you&rsquo;ve lost it. Context is file diffs, skills, the hierarchy of agent decisions, choices ranked by recency. That&rsquo;s what you need to transfer to be productive immediately somewhere else.</p>
+<p><strong>Models get confused about who they are.</strong> This was hilarious. I gave a handoff file to Claude&rsquo;s web UI. It immediately started claiming it had made changes to my filesystem.</p>
+<p>&ldquo;Wait,&rdquo; I said. &ldquo;You&rsquo;re not Claude Code. You&rsquo;re the web UI. You can&rsquo;t touch my filesystem.&rdquo;</p>
+<p>&ldquo;You&rsquo;re absolutely right,&rdquo; it responded.</p>
+<p>The handoff document needs to clarify what the new environment can and can&rsquo;t do.</p>
+<p><strong>7B is the sweet spot.</strong> I used local models because I hit this need exactly when Claude Code was unavailable. Larger models would compress better, sure. But 7B did the job. The 1B-3B models couldn&rsquo;t handle long conversations with multiple threads. 7B was small enough to run locally, capable enough to understand technical context.</p>
+<p><strong>It&rsquo;s not just about rate limits.</strong> I frequently switch between LLMs to get different perspectives on the same problem. I&rsquo;d previously built an &ldquo;LLM Prism&rdquo; (my version of Karpathy&rsquo;s LLM Council, showing questions to multiple models). But I barely used it because most of my sessions were deep in Claude Code with all that rich work state. I couldn&rsquo;t port the question; I needed to port the context.</p>
+<p>Now I can get ChatGPT&rsquo;s take on a refactoring decision without losing where I was.</p>
+<h2 id="forking-specs-not-just-code">Forking specs, not just code</h2>
+<p>Traditional open source: clone the repo, run the code. But you can also clone the specs, customize them, and have AI build your version.</p>
+<p>That&rsquo;s what I care about here. If you hit rate limits or want to switch between AI tools without losing your place, take the concept and make it yours.</p>
+<p>The code is meant to be forked in intent, not just in git.</p>
+<h2 id="try-it">Try it</h2>
+<p>Carryover is at <a href="https://github.com/deeptanshu/carryover">GitHub</a>. The token usage analysis that led to this is <a href="/essays/claude-code-rate-limits-token-budgets/">here</a>.</p>
+<p>If you build your own version, I&rsquo;d like to hear about it.</p>
+<hr>
+<p><em>Built because I got tired of copying chat logs. Runs on 7B models on a MacBook Air.</em></p>
 
       </div>
     </div>
