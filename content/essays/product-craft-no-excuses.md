@@ -1,6 +1,6 @@
 ---
 title: "Product Craft Has Always Mattered. Now You Have No Excuse."
-date: 2026-03-13T10:00:00-08:00
+date: 2026-03-13T00:00:00-08:00
 draft: false
 category: "Product"
 excerpt: "AI collapsed the cost of iteration. The only remaining explanation for a mediocre product is a mediocre set of decisions."
